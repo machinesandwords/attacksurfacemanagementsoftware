@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>ASM Vendor Index | Attack Surface Management Software</title>
+  <meta name="description" content="Every significant attack surface management vendor organized by architectural cluster. No rankings. No sponsored placements.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/landscape/vendors/">
+
+  <meta property="og:title" content="ASM Vendor Index | Attack Surface Management Software">
+  <meta property="og:description" content="Every significant attack surface management vendor organized by architectural cluster. No rankings. No sponsored placements.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/landscape/vendors/">
+  <meta property="og:type" content="article">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "ASM Vendor Index",
+    "description": "Every significant attack surface management vendor organized by architectural cluster. No rankings. No sponsored placements.",
+    "url": "https://attacksurfacemanagementsoftware.com/landscape/vendors/",
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "publisher": { "@type": "Organization", "name": "Attack Surface Management Software", "url": "https://attacksurfacemanagementsoftware.com" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Landscape", "item": "https://attacksurfacemanagementsoftware.com/landscape/" },
+      { "@type": "ListItem", "position": 3, "name": "Vendor Index", "item": "https://attacksurfacemanagementsoftware.com/landscape/vendors/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+
+  <style>
+    .vendor-section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      border-top: 2px solid var(--charcoal);
+      padding-top: 0.75rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .vendor-section-number {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .vendor-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--charcoal);
+    }
+    .vendor-tier-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin: 1.25rem 0 0.5rem;
+      padding-bottom: 0.25rem;
+      border-bottom: var(--hairline);
+    }
+    .vendor-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 120px;
+      border: var(--hairline);
+      border-bottom: none;
+      background: var(--surface);
+    }
+    .vendor-row:last-of-type,
+    .vendor-row.last {
+      border-bottom: var(--hairline);
+    }
+    .vendor-name-col {
+      padding: 0.85rem 1rem;
+      border-right: var(--hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .vendor-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .vendor-name a {
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+    .vendor-name a:hover { color: var(--accent); }
+    .vendor-type {
+      font-size: 11px;
+      color: var(--faint);
+      font-style: italic;
+    }
+    .vendor-body-col {
+      padding: 0.85rem 1rem;
+      border-right: var(--hairline);
+    }
+    .vendor-desc {
+      font-size: 13px;
+      color: var(--charcoal);
+      line-height: 1.6;
+      margin-bottom: 0.4rem;
+    }
+    .vendor-fit {
+      font-size: 12px;
+      color: var(--mid);
+      line-height: 1.5;
+    }
+    .vendor-watch {
+      font-size: 11px;
+      color: var(--mid);
+      line-height: 1.5;
+      border-left: 2px solid var(--border);
+      padding-left: 0.5rem;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+    .vendor-watch::before {
+      content: "Watch: ";
+      font-weight: 700;
+      font-style: normal;
+      color: var(--faint);
+    }
+    .vendor-meta-col {
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .vendor-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+    .vendor-meta-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 1px;
+    }
+    .vendor-meta-value {
+      font-size: 11px;
+      color: var(--mid);
+      line-height: 1.4;
+    }
+    .ctem-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border: 1px solid var(--border);
+      color: var(--faint);
+    }
+    .ctem-full {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .ctem-partial {
+      border-color: var(--mid);
+      color: var(--mid);
+    }
+    .index-note {
+      font-size: 12px;
+      color: var(--mid);
+      border-left: 3px solid var(--border);
+      padding-left: 0.75rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .jump-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 1.25rem;
+      border: var(--hairline);
+      background: var(--surface);
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .jump-nav-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--faint);
+      flex-shrink: 0;
+    }
+    .jump-nav a {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .jump-nav a:hover { text-decoration: underline; }
+    .cluster-note {
+      border: 1px solid var(--accent);
+      background: var(--accent-pale);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .cluster-note-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .cluster-note p {
+      font-size: 12px;
+      color: var(--charcoal);
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+    .cluster-note p:last-child { margin-bottom: 0; }
+    @media (max-width: 700px) {
+      .vendor-row { grid-template-columns: 1fr; }
+      .vendor-name-col, .vendor-body-col { border-right: none; border-bottom: var(--hairline); }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <article class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/landscape/">Landscape</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Vendors</span>
+        </nav>
+
+        <span class="page-label">Vendor Index</span>
+        <h1>ASM Vendor Index</h1>
+
+        <p class="lead">Every significant attack surface management vendor, organized by architectural cluster. No rankings. No sponsored placements. Vendors that cover multiple ASM types appear under their primary cluster with type noted.</p>
+
+        <p class="index-note">Pricing tiers reflect relative cost and contract model, not published rates. $$ = mid-market, standard enterprise licensing. $$$ = large enterprise, custom contracts, professional services typically required. Virtually no vendor in this market publishes list prices. CTEM alignment reflects whether the platform operationalizes Gartner's five-stage framework: none / partial / full.</p>
+
+        <nav class="jump-nav" aria-label="Jump to section">
+          <span class="jump-nav-label">Jump to:</span>
+          <a href="#consolidators">01 &mdash; Platform Consolidators</a>
+          <a href="#vuln-ecosystem">02 &mdash; Vulnerability Ecosystem Leaders</a>
+          <a href="#pure-play">03 &mdash; Pure-Play Specialists</a>
+          <a href="#risk-rating">04 &mdash; Cyber Risk Rating Platforms</a>
+        </nav>
+
+
+        <!-- 01 PLATFORM CONSOLIDATORS -->
+        <div class="vendor-section-header" id="consolidators">
+          <div class="vendor-section-number">01</div>
+          <div class="vendor-section-title">Platform Consolidators</div>
+        </div>
+
+        <p style="font-size:13px; color:var(--mid); margin-bottom:1rem; line-height:1.6;">ASM acquired and embedded into broader security ecosystems. Strongest when you are already standardized on their platform. Weakest when you are not.</p>
+
+        <div class="vendor-tier-label">Established</div>
+
+        <div class="vendor-row">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.paloaltonetworks.com/cortex/cortex-xpanse" target="_blank" rel="noopener">Palo Alto Networks Cortex Xpanse</a></div>
+            <div class="vendor-type">EASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Core differentiator is correlation: external exposure findings tie directly to endpoint, identity, and cloud telemetry inside Cortex XDR and XSIAM. For organizations already running Palo Alto as their primary security platform, that correlation is a meaningful operational advantage. For organizations that are not, the platform is expensive and the integration value evaporates.</div>
+            <div class="vendor-fit">Best fit: Large enterprises already standardized on the Palo Alto Cortex platform.</div>
+            <div class="vendor-watch">Platform lock-in is structural. ASM roadmap priorities are set by the broader Cortex platform, not by external discovery needs.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-partial">Partial</div>
+          </div>
+        </div>
+
+        <div class="vendor-row">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.crowdstrike.com/products/exposure-management/falcon-surface/" target="_blank" rel="noopener">CrowdStrike Falcon Surface</a></div>
+            <div class="vendor-type">EASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Built on the Reposify acquisition, integrated into the Falcon platform. An exposed external asset can be cross-referenced against whether it has a Falcon sensor installed, which identity credentials are associated with it, and what threat activity has been observed. Outside the CrowdStrike ecosystem, that value proposition collapses to a capable but undifferentiated EASM scanner. Best evaluated as a platform extension, not a standalone product.</div>
+            <div class="vendor-fit">Best fit: Organizations running CrowdStrike Falcon for endpoint and identity that want external visibility without adding a new vendor.</div>
+            <div class="vendor-watch">Discovery depth lags pure-play specialists for complex multi-subsidiary environments. Evaluate coverage against your specific infrastructure before committing.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-partial">Partial</div>
+          </div>
+        </div>
+
+        <div class="vendor-row last">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.microsoft.com/en-us/security/business/cloud-security/microsoft-defender-external-attack-surface-management" target="_blank" rel="noopener">Microsoft Defender EASM</a></div>
+            <div class="vendor-type">EASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Built on the RiskIQ acquisition, priced on a per-asset daily utilization model. The per-asset meter runs continuously, so costs can scale unpredictably in large enterprise environments with dynamic cloud footprints or significant shadow IT. The integration story is strongest when an organization is already deep in the Microsoft security stack: Sentinel as SIEM, Defender XDR as detection, Azure as cloud. Outside that environment, it is a functional EASM tool with moderate discovery depth.</div>
+            <div class="vendor-fit">Best fit: Enterprises standardized on the Microsoft security stack — Defender XDR, Sentinel, Azure.</div>
+            <div class="vendor-watch">Per-asset daily pricing creates budget unpredictability in environments with dynamic cloud footprints or extensive shadow IT. Model costs carefully before committing.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-partial">Partial</div>
+          </div>
+        </div>
+
+
+        <!-- 02 VULNERABILITY ECOSYSTEM LEADERS -->
+        <div class="vendor-section-header" id="vuln-ecosystem">
+          <div class="vendor-section-number">02</div>
+          <div class="vendor-section-title">Vulnerability Ecosystem Leaders</div>
+        </div>
+
+        <p style="font-size:13px; color:var(--mid); margin-bottom:1rem; line-height:1.6;">Legacy vulnerability management vendors that extended into external discovery. The value proposition is a unified internal and external exposure view. The limitation is architectural roots in authenticated internal scanning rather than internet-scale seedless discovery.</p>
+
+        <div class="vendor-tier-label">Established</div>
+
+        <div class="vendor-row">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.tenable.com/products/attack-surface-management" target="_blank" rel="noopener">Tenable Attack Surface Management</a></div>
+            <div class="vendor-type">EASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">External discovery layer of the Tenable One exposure management platform. The value proposition is a unified exposure view: external discovery combined with internal vulnerability data from Tenable's authenticated scanning, all scored and prioritized within a single platform. Tenable has made the most complete architectural commitment to CTEM among the vulnerability management incumbents.</div>
+            <div class="vendor-fit">Best fit: Organizations already running Tenable for internal vulnerability management pursuing formal CTEM adoption.</div>
+            <div class="vendor-watch">External discovery depth trails Censys in raw internet-scale coverage for large complex environments. Evaluate seedless discovery accuracy for your specific footprint.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-full">Full</div>
+          </div>
+        </div>
+
+        <div class="vendor-row">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.qualys.com/apps/external-attack-surface-management/" target="_blank" rel="noopener">Qualys EASM</a></div>
+            <div class="vendor-type">EASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Adds external asset discovery to the Qualys vulnerability management platform, which is built around authenticated internal scanning. The integration is tighter than most competitors offer within a single platform, but the external discovery engine reflects Qualys's authenticated-scanning roots. Exploitability validation on external assets requires adjacent Qualys modules.</div>
+            <div class="vendor-fit">Best fit: Organizations already running Qualys VMDR that want external discovery integrated into their existing risk scoring workflows.</div>
+            <div class="vendor-watch">External discovery completeness requires validation against your specific environment. Exploitability validation on external findings requires additional Qualys modules beyond the EASM product itself.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-partial">Partial</div>
+          </div>
+        </div>
+
+        <div class="vendor-row last">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.rapid7.com/products/command/exposure-management/" target="_blank" rel="noopener">Rapid7 Exposure Command</a></div>
+            <div class="vendor-type">EASM + CAASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Combines external discovery (EASM) with internal asset aggregation (CAASM), delivering broader internal coverage than EASM-only competitors. Ingests data from cloud providers, identity systems, and existing Rapid7 deployments alongside external internet scanning. Integration with Rapid7's SIEM product, InsightIDR, means an exposed asset discovered by Exposure Command can be monitored for active exploitation within the same platform, so discovery and detection rae handled in a single workflow rather than two separate tools.</div>
+            <div class="vendor-fit">Best fit: Organizations running Rapid7 for vulnerability management and detection that want unified internal and external asset visibility in a single platform.</div>
+            <div class="vendor-watch">External discovery depth trails pure-play specialists. Evaluate internet-scale coverage for environments with complex subsidiary or third-party infrastructure.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-partial">Partial</div>
+          </div>
+        </div>
+
+
+        <!-- 03 PURE-PLAY SPECIALISTS -->
+        <div class="vendor-section-header" id="pure-play">
+          <div class="vendor-section-number">03</div>
+          <div class="vendor-section-title">Pure-Play and Internet-Scale Specialists</div>
+        </div>
+
+        <p style="font-size:13px; color:var(--mid); margin-bottom:1rem; line-height:1.6;">Vendors built from the ground up for discovery fidelity. No platform tax. Frequently deployed alongside consolidator and vuln management tools as the high-fidelity discovery layer — which is itself a useful signal about where the other clusters fall short.</p>
+
+        <div class="vendor-tier-label">Established</div>
+
+        <div class="vendor-row">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://censys.com" target="_blank" rel="noopener">Censys</a></div>
+            <div class="vendor-type">EASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Built on continuous scanning of the full public internet across 100+ ports and 40+ services, with origins in academic security research at the University of Michigan. The platform has migrated from its legacy search architecture to a unified Censys Platform powered by CenQL, with a natural-language query interface via Censys Assistant. Coverage breadth and data freshness are strong — the academic research background established rigorous methodology that commercial-only scanners have not consistently matched. Its weakness is structural: Censys shows what exists on the public internet but does not determine which assets belong to a specific organization, nor does it provide exploitability validation or remediation routing. It is a data platform, not an operational EASM product.</div>
+            <div class="vendor-fit">Best fit: Security researchers, red teams, and GRC analysts whose primary requirement is ground-truth internet discovery data, or organizations building custom exposure programs via API.</div>
+            <div class="vendor-watch">Not an operational EASM platform. Asset attribution, exploitability validation, and remediation routing require external tools. Legacy Search APIs are sunsetting — existing automations built on the old API need migration to the new Censys Platform.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-partial">Partial</div>
+          </div>
+        </div>
+
+        <div class="vendor-tier-label">Challengers</div>
+
+        <div class="vendor-row">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://ionix.io" target="_blank" rel="noopener">IONIX</a></div>
+            <div class="vendor-type">EASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Differentiates on organizational entity mapping and exploitability validation. Where most EASM platforms discover assets and report exposures, IONIX builds an organizational model first — mapping subsidiaries, acquired companies, and supply chain dependencies — then validates which discovered exposures are actually exploitable rather than reporting passive enumeration findings. This architecture is particularly suited to multi-subsidiary enterprises and organizations with active M&A pipelines. IONIX operationalizes all five CTEM stages, one of few vendors that can make that claim credibly from independent sources.</div>
+            <div class="vendor-fit">Best fit: Multi-subsidiary enterprises, organizations with recent or ongoing M&A activity, and security teams that need validated exploitability findings rather than passive enumeration.</div>
+            <div class="vendor-watch">Premium pricing reflects the depth of the platform. ROI case is strongest for complex entity structures — single-entity organizations with clean infrastructure may not need this level of depth.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-full">Full</div>
+          </div>
+        </div>
+
+        <div class="vendor-row">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.cycognito.com" target="_blank" rel="noopener">CyCognito</a></div>
+            <div class="vendor-type">EASM</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Runs automated, unauthenticated active testing at scale — not passive enumeration — to confirm external reachability and exposure conditions. Passive scanners report what exists; CyCognito attempts to confirm what is actually exposed and reachable from the internet. The platform also validates whether remediation actions actually reduced external exposure, a feedback loop most competitors do not close. Strongest for directly-owned infrastructure rather than the complex multi-subsidiary use case where IONIX has a structural advantage.</div>
+            <div class="vendor-fit">Best fit: Mid-market and enterprise security teams that want active exposure validation — confirmed reachability, not just passive enumeration — for directly-owned infrastructure.</div>
+            <div class="vendor-watch">Organizational scope is strongest for single-entity or simple structures. Complex multi-subsidiary environments may find IONIX's entity mapping more appropriate.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-partial">Partial</div>
+          </div>
+        </div>
+
+        <div class="vendor-row last">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.cybelangel.com" target="_blank" rel="noopener">CybelAngel</a></div>
+            <div class="vendor-type">EASM + DRPS</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Combines external attack surface management with digital risk protection — dark web monitoring, data leak detection, and credential exposure — in a single platform. Deep contextual asset mapping for digital supply chains and third-party dependencies differentiates it from EASM platforms that concentrate on directly-owned infrastructure. The combined EASM and DRPS architecture is valuable where third-party and supplier exposure is a primary risk concern, though it introduces broader scope than organizations focused purely on operational ASM need.</div>
+            <div class="vendor-fit">Best fit: Enterprises with significant third-party and supply chain exposure where digital risk protection needs to sit alongside external asset discovery in a single workflow.</div>
+            <div class="vendor-watch">Broader scope means evaluation should confirm which capabilities are actually needed. DRPS depth comes at the cost of some EASM operational depth compared to pure discovery specialists.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seedless</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge ctem-partial">Partial</div>
+          </div>
+        </div>
+
+
+        <!-- 04 CYBER RISK RATING PLATFORMS -->
+        <div class="vendor-section-header" id="risk-rating">
+          <div class="vendor-section-number">04</div>
+          <div class="vendor-section-title">Cyber Risk Rating Platforms</div>
+        </div>
+
+        <div class="cluster-note">
+          <div class="cluster-note-label">Different question, different tool</div>
+          <p>These platforms answer a different question than operational EASM: not "what can an attacker exploit in my environment right now" but "how does my external posture compare to industry benchmarks, and how do my vendors score." That framing is useful for compliance reporting, insurance underwriting, and third-party vendor risk programs. It is not a substitute for operational EASM. Understand which question you are actually trying to answer before putting these platforms on your shortlist.</p>
+        </div>
+
+        <div class="vendor-tier-label">Established</div>
+
+        <div class="vendor-row">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://www.bitsight.com" target="_blank" rel="noopener">Bitsight</a></div>
+            <div class="vendor-type">EASM + DRPS</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">A security ratings and vendor risk management platform that has built external attack surface monitoring capabilities alongside its core cyber insurance and compliance products. Architecture is optimized for scoring and benchmarking. Useful for board reporting, insurance underwriting, and third-party vendor assessments. Less useful for security operations teams who need actionable findings routed to remediation. ASM capabilities function as an extension of the ratings model rather than as a standalone discovery engine.</div>
+            <div class="vendor-fit">Best fit: GRC teams and risk management functions whose primary use case is vendor risk assessment, board reporting, or cyber insurance rather than security operations workflows.</div>
+            <div class="vendor-watch">Not a substitute for operational EASM. Discovery depth and exploitability context are meaningfully shallower than purpose-built EASM platforms.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seeded</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge">None</div>
+          </div>
+        </div>
+
+        <div class="vendor-row last">
+          <div class="vendor-name-col">
+            <div class="vendor-name"><a href="https://securityscorecard.com" target="_blank" rel="noopener">SecurityScorecard</a></div>
+            <div class="vendor-type">EASM + DRPS</div>
+          </div>
+          <div class="vendor-body-col">
+            <div class="vendor-desc">Built on security ratings for third-party vendor assessment and cyber insurance, extended into attack surface monitoring from that foundation. Provides continuous monitoring of an organization's own attack surface alongside vendor portfolios, with findings surfaced in the context of ratings and risk scores. The procurement and vendor risk management workflows are the strongest use case. Security operations teams looking for actionable, exploitability-validated findings will find the operational depth limited relative to dedicated EASM platforms.</div>
+            <div class="vendor-fit">Best fit: Risk management and procurement teams running vendor risk programs who want their own posture monitored in the same platform used to assess third-party vendors.</div>
+            <div class="vendor-watch">Operational EASM depth is limited. Best evaluated as a risk management tool, not a security operations tool.</div>
+          </div>
+          <div class="vendor-meta-col">
+            <div class="vendor-price">$$$</div>
+            <div class="vendor-meta-label">Discovery</div>
+            <div class="vendor-meta-value">Seeded</div>
+            <div class="vendor-meta-label">CTEM</div>
+            <div class="ctem-badge">None</div>
+          </div>
+        </div>
+
+
+        <h2>Where to go next</h2>
+
+        <p>The <a href="/landscape/">landscape overview</a> covers the architectural trade-offs between clusters before you engage with specific vendors. The <a href="/tools/vendor-comparison/">comparison tool</a> lets you filter and compare platforms by discovery method, CTEM alignment, and deployment model. The <a href="/landscape/market-direction/">market direction page</a> covers where the category is heading and what that means for buying decisions made today.</p>
+
+        <div class="newsletter-block">
+          <span class="page-label">Stay current</span>
+          <p>Vendor changes, category shifts, and new evaluation resources — delivered when it matters.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="your@email.com" aria-label="Email address">
+            <button type="button">Subscribe</button>
+          </div>
+        </div>
+
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+<script src="/newsletter.js"></script>
+</body>
+</html>

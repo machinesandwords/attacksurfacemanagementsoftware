@@ -11,7 +11,7 @@ window.SITE_CONFIG = {
   name:      "Attack Surface Management Software",
   nameHtml:  "Attack Surface Management <span>IoT</span> Software",
   domain:    "attacksurfacemanagementsoftware.com",
-  tagline:   "Independent guidance for industrial IoT software buyers",
+  tagline:   "Independent guidance for enterprise security software buyers",
   accent:    "#C0392B",
   accentDim: "#9b2d22",
   accentPale:"#faeaea"

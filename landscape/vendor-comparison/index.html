@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>ASM Vendor Comparison Tool | Attack Surface Management Software</title>
+  <meta name="description" content="Filter and compare attack surface management vendors by cluster, ASM type, discovery method, CTEM alignment, and pricing. Independent. No sponsored placements.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/tools/vendor-comparison/">
+
+  <meta property="og:title" content="ASM Vendor Comparison Tool | Attack Surface Management Software">
+  <meta property="og:description" content="Filter and compare attack surface management vendors by cluster, ASM type, discovery method, CTEM alignment, and pricing.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/tools/vendor-comparison/">
+  <meta property="og:type" content="website">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ASM Vendor Comparison Tool",
+    "url": "https://attacksurfacemanagementsoftware.com/tools/vendor-comparison/",
+    "description": "Filter and compare attack surface management vendors by cluster, ASM type, discovery method, CTEM alignment, and pricing. Independent. No sponsored placements.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://attacksurfacemanagementsoftware.com/tools/" },
+      { "@type": "ListItem", "position": 3, "name": "Vendor Comparison Tool", "item": "https://attacksurfacemanagementsoftware.com/tools/vendor-comparison/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+
+  <style>
+    .tool-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .filter-panel {
+      position: sticky;
+      top: 60px;
+      background: var(--surface);
+      border: var(--hairline);
+      padding: 1rem;
+    }
+    .filter-section { margin-bottom: 1.25rem; }
+    .filter-section:last-child { margin-bottom: 0; }
+    .filter-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--charcoal);
+      margin-bottom: 0.5rem; display: block;
+    }
+    .filter-option {
+      display: flex; align-items: center; gap: 0.4rem;
+      margin-bottom: 0.3rem; cursor: pointer;
+    }
+    .filter-option input[type="checkbox"] {
+      accent-color: var(--accent); width: 13px; height: 13px;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .filter-option span {
+      font-size: 12px; color: var(--charcoal); cursor: pointer; line-height: 1.3;
+    }
+    .filter-reset {
+      font-size: 11px; color: var(--accent); cursor: pointer; background: none; border: none;
+      padding: 0; font-family: 'Space Mono', monospace; text-decoration: underline;
+      margin-top: 0.75rem; display: block;
+    }
+    .filter-reset:hover { color: var(--accent-dim); }
+    .results-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 1rem; border-bottom: var(--hairline); padding-bottom: 0.5rem;
+    }
+    .results-count { font-size: 12px; color: var(--mid); }
+    .results-count strong { color: var(--accent); }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+    .vendor-card {
+      background: var(--surface); padding: 1.1rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .vendor-card-header {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem;
+    }
+    .vendor-card-name { font-size: 14px; font-weight: 700; }
+    .vendor-card-name a { color: var(--charcoal); text-decoration: none; }
+    .vendor-card-name a:hover { color: var(--accent); }
+    .vendor-card-price { font-size: 13px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .vendor-card-tier {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--faint);
+    }
+    .vendor-card-desc { font-size: 12px; color: var(--charcoal); line-height: 1.6; }
+    .vendor-card-fit {
+      font-size: 12px; color: var(--mid); line-height: 1.5;
+      border-top: var(--hairline); padding-top: 0.5rem;
+    }
+    .vendor-card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .vtag {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--mid); background: var(--bg); border: var(--hairline);
+      padding: 0.15rem 0.4rem; line-height: 1.4;
+    }
+    .vtag-matched { color: var(--accent); border-color: var(--accent); background: var(--accent-pale); }
+    .vendor-card-watch {
+      font-size: 11px; color: var(--mid);
+      border-top: var(--hairline); padding-top: 0.5rem; font-style: italic;
+    }
+    .vendor-card-watch::before {
+      content: "Watch: ";
+      font-weight: 700; font-style: normal; color: var(--faint);
+    }
+    .no-results {
+      padding: 2rem; text-align: center; color: var(--mid); font-size: 13px;
+      background: var(--surface); border: var(--hairline);
+    }
+    .active-filters { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; min-height: 24px; }
+    .active-filter-tag {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--accent); background: var(--accent-pale); border: 1px solid var(--accent);
+      padding: 0.2rem 0.5rem; display: flex; align-items: center; gap: 0.3rem;
+    }
+    .active-filter-tag button {
+      background: none; border: none; color: var(--accent);
+      cursor: pointer; font-family: 'Space Mono', monospace; font-size: 12px; padding: 0; line-height: 1;
+    }
+    @media (max-width: 800px) {
+      .tool-layout { grid-template-columns: 1fr; }
+      .filter-panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <article class="content" style="max-width:100%;">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/tools/">Tools</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Vendor Comparison</span>
+        </nav>
+
+        <span class="page-label">Tools</span>
+        <h1>ASM Vendor Comparison Tool</h1>
+
+        <p class="lead">Filter the full ASM vendor landscape by architectural cluster, ASM type, discovery method, CTEM alignment, and pricing. No sponsored placements — vendors appear based on fit, not commercial relationships.</p>
+
+        <div class="tool-layout">
+
+          <!-- Filter panel -->
+          <div class="filter-panel">
+
+            <div class="filter-section">
+              <span class="filter-label">Cluster</span>
+              <label class="filter-option"><input type="checkbox" name="cluster" value="platform-consolidator"> <span>Platform consolidator</span></label>
+              <label class="filter-option"><input type="checkbox" name="cluster" value="vuln-ecosystem"> <span>Vuln ecosystem</span></label>
+              <label class="filter-option"><input type="checkbox" name="cluster" value="pure-play"> <span>Pure-play specialist</span></label>
+              <label class="filter-option"><input type="checkbox" name="cluster" value="risk-rating"> <span>Risk rating platform</span></label>
+            </div>
+
+            <div class="filter-section">
+              <span class="filter-label">ASM Type</span>
+              <label class="filter-option"><input type="checkbox" name="asm_type" value="EASM"> <span>EASM</span></label>
+              <label class="filter-option"><input type="checkbox" name="asm_type" value="CAASM"> <span>CAASM</span></label>
+              <label class="filter-option"><input type="checkbox" name="asm_type" value="DRPS"> <span>DRPS</span></label>
+            </div>
+
+            <div class="filter-section">
+              <span class="filter-label">Discovery</span>
+              <label class="filter-option"><input type="checkbox" name="discovery_method" value="seedless"> <span>Seedless</span></label>
+              <label class="filter-option"><input type="checkbox" name="discovery_method" value="seeded"> <span>Seeded</span></label>
+            </div>
+
+            <div class="filter-section">
+              <span class="filter-label">CTEM Alignment</span>
+              <label class="filter-option"><input type="checkbox" name="ctem_alignment" value="full"> <span>Full</span></label>
+              <label class="filter-option"><input type="checkbox" name="ctem_alignment" value="partial"> <span>Partial</span></label>
+              <label class="filter-option"><input type="checkbox" name="ctem_alignment" value="none"> <span>None</span></label>
+            </div>
+
+            <div class="filter-section">
+              <span class="filter-label">Pricing</span>
+              <label class="filter-option"><input type="checkbox" name="pricing" value="$$"> <span>$$ — Mid-market</span></label>
+              <label class="filter-option"><input type="checkbox" name="pricing" value="$$$"> <span>$$$ — Enterprise</span></label>
+            </div>
+
+            <div class="filter-section">
+              <span class="filter-label">Company Size</span>
+              <label class="filter-option"><input type="checkbox" name="company_size" value="mid-market"> <span>Mid-market</span></label>
+              <label class="filter-option"><input type="checkbox" name="company_size" value="enterprise"> <span>Enterprise</span></label>
+            </div>
+
+            <button class="filter-reset" id="reset-btn">Reset all filters</button>
+          </div>
+
+          <!-- Results -->
+          <div class="results-area">
+            <div class="active-filters" id="active-filters"></div>
+            <div class="results-header">
+              <span class="results-count" id="results-count"><strong>0</strong> vendors</span>
+            </div>
+            <div class="results-grid" id="results-grid"></div>
+          </div>
+
+        </div>
+
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    var vendors = [];
+    var activeFilters = {
+      cluster: [],
+      asm_type: [],
+      discovery_method: [],
+      ctem_alignment: [],
+      pricing: [],
+      company_size: []
+    };
+
+    var clusterLabels = {
+      'platform-consolidator': 'Consolidator',
+      'vuln-ecosystem':        'Vuln ecosystem',
+      'pure-play':             'Pure-play',
+      'risk-rating':           'Risk rating'
+    };
+
+    var ctemLabels = {
+      'full':    'CTEM: Full',
+      'partial': 'CTEM: Partial',
+      'none':    'CTEM: None'
+    };
+
+    fetch('/vendors.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        vendors = data;
+        render();
+      });
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        var name = this.name;
+        var value = this.value;
+        if (this.checked) {
+          if (!activeFilters[name]) activeFilters[name] = [];
+          activeFilters[name].push(value);
+        } else {
+          activeFilters[name] = activeFilters[name].filter(function(v) { return v !== value; });
+        }
+        render();
+      });
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', function() {
+      Object.keys(activeFilters).forEach(function(k) { activeFilters[k] = []; });
+      document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) { cb.checked = false; });
+      render();
+    });
+
+    function hasActiveFilters() {
+      return Object.values(activeFilters).some(function(arr) { return arr.length > 0; });
+    }
+
+    function vendorMatches(v) {
+      if (activeFilters.cluster.length && !activeFilters.cluster.includes(v.cluster)) return false;
+      if (activeFilters.asm_type.length && !activeFilters.asm_type.some(function(t) { return (v.asm_type || []).includes(t); })) return false;
+      if (activeFilters.discovery_method.length && !activeFilters.discovery_method.includes(v.discovery_method)) return false;
+      if (activeFilters.ctem_alignment.length && !activeFilters.ctem_alignment.includes(v.ctem_alignment)) return false;
+      if (activeFilters.pricing.length && !activeFilters.pricing.includes(v.pricing)) return false;
+      if (activeFilters.company_size.length && !activeFilters.company_size.some(function(s) { return (v.company_size || []).includes(s); })) return false;
+      return true;
+    }
+
+    function renderActiveFilters() {
+      var container = document.getElementById('active-filters');
+      var tags = [];
+      Object.keys(activeFilters).forEach(function(key) {
+        activeFilters[key].forEach(function(val) {
+          tags.push({ key: key, val: val });
+        });
+      });
+      if (!tags.length) { container.innerHTML = ''; return; }
+      container.innerHTML = tags.map(function(t) {
+        return '<span class="active-filter-tag">' + t.val +
+          '<button onclick="removeFilter(\'' + t.key + '\',\'' + t.val + '\')">&times;</button></span>';
+      }).join('');
+    }
+
+    function removeFilter(key, val) {
+      activeFilters[key] = activeFilters[key].filter(function(v) { return v !== val; });
+      var cb = document.querySelector('input[name="' + key + '"][value="' + val + '"]');
+      if (cb) cb.checked = false;
+      render();
+    }
+
+    function renderCard(v) {
+      var clusterMatched = activeFilters.cluster.includes(v.cluster);
+      var clusterTag = '<span class="vtag' + (clusterMatched ? ' vtag-matched' : '') + '">' +
+        (clusterLabels[v.cluster] || v.cluster) + '</span>';
+
+      var typeTags = (v.asm_type || []).map(function(t) {
+        var matched = activeFilters.asm_type.includes(t);
+        return '<span class="vtag' + (matched ? ' vtag-matched' : '') + '">' + t + '</span>';
+      }).join('');
+
+      var discoveryMatched = activeFilters.discovery_method.includes(v.discovery_method);
+      var discoveryTag = v.discovery_method
+        ? '<span class="vtag' + (discoveryMatched ? ' vtag-matched' : '') + '">' + v.discovery_method + '</span>'
+        : '';
+
+      var ctemMatched = activeFilters.ctem_alignment.includes(v.ctem_alignment);
+      var ctemTag = v.ctem_alignment
+        ? '<span class="vtag' + (ctemMatched ? ' vtag-matched' : '') + '">' + (ctemLabels[v.ctem_alignment] || v.ctem_alignment) + '</span>'
+        : '';
+
+      var watchHtml = v.watch
+        ? '<div class="vendor-card-watch">' + v.watch + '</div>'
+        : '';
+
+      return '<div class="vendor-card">' +
+        '<div class="vendor-card-header">' +
+          '<div>' +
+            '<div class="vendor-card-name"><a href="' + v.url + '" target="_blank" rel="noopener">' + v.name + '</a></div>' +
+            '<div class="vendor-card-tier">' + v.tier + '</div>' +
+          '</div>' +
+          '<div class="vendor-card-price">' + v.pricing + '</div>' +
+        '</div>' +
+        '<div class="vendor-card-desc">' + v.description + '</div>' +
+        '<div class="vendor-card-fit">' + v.best_fit + '</div>' +
+        '<div class="vendor-card-tags">' + clusterTag + typeTags + discoveryTag + ctemTag + '</div>' +
+        watchHtml +
+        '</div>';
+    }
+
+    function render() {
+      renderActiveFilters();
+      var filtered = hasActiveFilters()
+        ? vendors.filter(vendorMatches)
+        : vendors.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
+
+      var countEl = document.getElementById('results-count');
+      countEl.innerHTML = '<strong>' + filtered.length + '</strong> vendor' + (filtered.length !== 1 ? 's' : '');
+
+      var grid = document.getElementById('results-grid');
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="no-results">No vendors match the selected filters. Try removing one or more criteria.</div>';
+        return;
+      }
+      grid.innerHTML = filtered.map(renderCard).join('');
+    }
+  </script>
+<script src="/newsletter.js"></script>
+</body>
+</html>
