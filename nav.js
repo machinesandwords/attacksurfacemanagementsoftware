@@ -27,8 +27,8 @@
     <div class="nav-section">
       <div class="nav-section-label">Tools</div>
       <a href="/tools/" class="nav-item depth-0">All tools</a>
-      <a href="/tools/tool-evaluation-checklist/" class="nav-item depth-1">└ Tool evaluation checklist</a>
       <a href="/tools/evaluation-checklist/" class="nav-item depth-1">└ Platform evaluation checklist</a>
+      <a href="/tools/pricing-calculator/" class="nav-item depth-1">└ Pricing calculator</a>
       <a href="/tools/" class="nav-item depth-1">└ more</a>
         </div>
 

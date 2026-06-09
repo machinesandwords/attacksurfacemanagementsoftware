@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>Per-Asset Pricing Calculator | Attack Surface Management Software</title>
+  <meta name="description" content="Estimate what a per-asset daily EASM pricing model will actually cost once the platform discovers your full attack surface — not just what's in your asset inventory today.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/tools/pricing-calculator/">
+
+  <meta property="og:title" content="Per-Asset Pricing Calculator | Attack Surface Management Software">
+  <meta property="og:description" content="Estimate what a per-asset daily EASM pricing model will actually cost once the platform discovers your full attack surface.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/tools/pricing-calculator/">
+  <meta property="og:type" content="website">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Per-Asset Pricing Calculator",
+    "url": "https://attacksurfacemanagementsoftware.com/tools/pricing-calculator/",
+    "description": "Estimate what a per-asset daily EASM pricing model will actually cost once the platform discovers your full attack surface.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://attacksurfacemanagementsoftware.com/tools/" },
+      { "@type": "ListItem", "position": 3, "name": "Per-Asset Pricing Calculator", "item": "https://attacksurfacemanagementsoftware.com/tools/pricing-calculator/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+
+  <style>
+    .calc-section {
+      border: var(--hairline);
+      background: var(--surface);
+      margin-bottom: 1px;
+    }
+    .calc-section:last-of-type { margin-bottom: 32px; }
+    .calc-section-header {
+      padding: 10px 20px;
+      background: var(--bg);
+      border-bottom: var(--hairline);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .calc-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border-bottom: var(--hairline);
+    }
+    .calc-row:last-child { border-bottom: none; }
+    .calc-label-cell {
+      background: var(--surface);
+      padding: 14px 20px;
+    }
+    .calc-label {
+      font-size: var(--small);
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 3px;
+    }
+    .calc-hint {
+      font-size: 11px;
+      color: var(--faint);
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .calc-input-cell {
+      background: var(--surface);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+    }
+    .calc-input-cell input[type="number"] {
+      width: 100%;
+      font-family: 'Space Mono', monospace;
+      font-size: var(--h2);
+      font-weight: 700;
+      color: var(--charcoal);
+      background: var(--bg);
+      border: var(--hairline);
+      padding: 8px 12px;
+      outline: none;
+      border-radius: 0;
+      -moz-appearance: textfield;
+    }
+    .calc-input-cell input[type="number"]::-webkit-outer-spin-button,
+    .calc-input-cell input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .calc-input-cell input[type="number"]:focus { border-color: var(--accent); }
+    .calc-select-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+    .calc-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border: var(--hairline);
+      cursor: pointer;
+      background: var(--bg);
+      transition: background 0.1s, border-color 0.1s;
+    }
+    .calc-option:hover { border-color: var(--accent); }
+    .calc-option.selected { background: var(--accent-pale); border-color: var(--accent); }
+    .calc-option input[type="radio"] { margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
+    .calc-option-label { font-size: var(--small); font-weight: 700; color: var(--charcoal); }
+    .calc-option-hint { font-size: 11px; color: var(--mid); margin-top: 1px; }
+
+    /* Results */
+    .results-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--charcoal);
+      border: var(--hairline);
+      border-bottom: none;
+      margin-top: 32px;
+    }
+    .results-header-cell {
+      background: var(--charcoal);
+      padding: 12px 16px;
+      text-align: center;
+    }
+    .results-header-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 2px;
+    }
+    .results-header-rate {
+      font-size: var(--small);
+      font-weight: 700;
+      color: white;
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: var(--hairline);
+      border-top: none;
+      margin-bottom: 1px;
+    }
+    .results-grid:last-of-type { margin-bottom: 32px; }
+    .result-cell {
+      background: var(--surface);
+      padding: 16px;
+      text-align: center;
+    }
+    .result-cell.highlight { background: var(--accent-pale); }
+    .result-value {
+      font-size: var(--h1);
+      font-weight: 700;
+      color: var(--charcoal);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .result-value.accent { color: var(--accent); }
+    .result-label {
+      font-size: 11px;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .delta-bar {
+      border: var(--hairline);
+      border-top: none;
+      background: var(--surface);
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+    }
+    .delta-cell { text-align: center; }
+    .delta-value {
+      font-size: var(--h2);
+      font-weight: 700;
+      color: #991b1b;
+      margin-bottom: 2px;
+    }
+    .delta-label { font-size: 11px; color: var(--faint); }
+
+    .multiplier-callout {
+      border: var(--hairline);
+      border-left: 3px solid var(--accent);
+      background: var(--surface);
+      padding: 16px 20px;
+      margin-bottom: 32px;
+    }
+    .multiplier-callout-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .multiplier-breakdown {
+      font-size: var(--small);
+      color: var(--mid);
+      line-height: 1.8;
+    }
+    .multiplier-breakdown strong { color: var(--charcoal); }
+
+    .empty-state {
+      border: var(--hairline);
+      background: var(--surface);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--faint);
+      font-size: var(--small);
+      margin-top: 32px;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 640px) {
+      .calc-row { grid-template-columns: 1fr; }
+      .results-header { grid-template-columns: 1fr; }
+      .results-grid { grid-template-columns: 1fr; }
+      .delta-bar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <div class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/tools/">Tools</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Pricing Calculator</span>
+        </nav>
+
+        <span class="page-label">Tools</span>
+        <h1>Per-asset pricing calculator</h1>
+
+        <p class="lead">Per-asset daily pricing sounds predictable until the platform finds assets you didn't know about. Enter your environment profile to estimate the gap between what you'd budget and what you'd actually pay.</p>
+
+        <p style="font-size:var(--small); color:var(--mid); margin-bottom:32px;">Estimates are based on typical discovery multipliers for each environment type. Use the output to pressure-test your vendor's cost model before signing — not as a substitute for a pre-contract discovery sample. <a href="/guides/per-asset-pricing-trap/">Read the guide &rarr;</a></p>
+
+        <!-- Input: Known asset count -->
+        <div class="calc-section">
+          <div class="calc-section-header">Your environment</div>
+          <div class="calc-row">
+            <div class="calc-label-cell">
+              <div class="calc-label">Known asset count</div>
+              <div class="calc-hint">Assets in your current inventory — CMDB, cloud asset register, DNS records. This is what you'd use to price a contract today.</div>
+            </div>
+            <div class="calc-input-cell">
+              <input type="number" id="known-assets" min="0" max="9999999" placeholder="e.g. 5000" oninput="calculate()">
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <div class="calc-label-cell">
+              <div class="calc-label">Number of subsidiaries</div>
+              <div class="calc-hint">Operating subsidiaries under different brand names, domains, or hosting arrangements — not just divisions of the same entity.</div>
+            </div>
+            <div class="calc-input-cell">
+              <input type="number" id="subsidiaries" min="0" max="999" placeholder="e.g. 3" oninput="calculate()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Input: M&A activity -->
+        <div class="calc-section">
+          <div class="calc-section-header">M&amp;A activity (last 3 years)</div>
+          <div class="calc-row">
+            <div class="calc-label-cell">
+              <div class="calc-hint">Acquired infrastructure inherits the previous owner's security posture and asset inventory gaps. Each acquisition adds undiscovered external footprint.</div>
+            </div>
+            <div class="calc-input-cell">
+              <div class="calc-select-group">
+                <label class="calc-option selected" id="ma-none-label">
+                  <input type="radio" name="ma" value="none" checked onchange="selectOption('ma', this); calculate()">
+                  <div>
+                    <div class="calc-option-label">No acquisitions</div>
+                    <div class="calc-option-hint">Stable corporate structure</div>
+                  </div>
+                </label>
+                <label class="calc-option" id="ma-some-label">
+                  <input type="radio" name="ma" value="some" onchange="selectOption('ma', this); calculate()">
+                  <div>
+                    <div class="calc-option-label">1–2 acquisitions</div>
+                    <div class="calc-option-hint">Some inherited infrastructure, partially integrated</div>
+                  </div>
+                </label>
+                <label class="calc-option" id="ma-active-label">
+                  <input type="radio" name="ma" value="active" onchange="selectOption('ma', this); calculate()">
+                  <div>
+                    <div class="calc-option-label">Active acquirer</div>
+                    <div class="calc-option-hint">3+ acquisitions, ongoing integration, significant inherited footprint</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input: DevOps activity -->
+        <div class="calc-section">
+          <div class="calc-section-header">DevOps and cloud activity</div>
+          <div class="calc-row">
+            <div class="calc-label-cell">
+              <div class="calc-hint">Teams spinning up cloud infrastructure outside IT governance — development environments, test instances, forgotten deployments — expand the discoverable attack surface beyond the managed inventory.</div>
+            </div>
+            <div class="calc-input-cell">
+              <div class="calc-select-group">
+                <label class="calc-option selected" id="devops-stable-label">
+                  <input type="radio" name="devops" value="stable" checked onchange="selectOption('devops', this); calculate()">
+                  <div>
+                    <div class="calc-option-label">Stable</div>
+                    <div class="calc-option-hint">Tightly governed cloud infrastructure, minimal shadow IT</div>
+                  </div>
+                </label>
+                <label class="calc-option" id="devops-moderate-label">
+                  <input type="radio" name="devops" value="moderate" onchange="selectOption('devops', this); calculate()">
+                  <div>
+                    <div class="calc-option-label">Moderate</div>
+                    <div class="calc-option-hint">Active development teams, some ungoverned cloud usage</div>
+                  </div>
+                </label>
+                <label class="calc-option" id="devops-high-label">
+                  <input type="radio" name="devops" value="high" onchange="selectOption('devops', this); calculate()">
+                  <div>
+                    <div class="calc-option-label">High</div>
+                    <div class="calc-option-hint">Multiple teams deploying independently, significant cloud sprawl</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results-empty" class="empty-state">
+          Enter your known asset count above to see the estimate.
+        </div>
+
+        <div id="results" style="display:none;">
+
+          <div class="multiplier-callout">
+            <div class="multiplier-callout-label">Discovery multiplier</div>
+            <div class="multiplier-breakdown" id="multiplier-breakdown"></div>
+          </div>
+
+          <div class="results-header">
+            <div class="results-header-cell">
+              <div class="results-header-label">Conservative</div>
+              <div class="results-header-rate">$0.01 / asset / day</div>
+            </div>
+            <div class="results-header-cell">
+              <div class="results-header-label">Mid-range</div>
+              <div class="results-header-rate">$0.02 / asset / day</div>
+            </div>
+            <div class="results-header-cell">
+              <div class="results-header-label">Higher end</div>
+              <div class="results-header-rate">$0.03 / asset / day</div>
+            </div>
+          </div>
+
+          <div class="results-grid">
+            <div class="result-cell">
+              <div class="result-value" id="est-assets-low"></div>
+              <div class="result-label">Est. discovered assets</div>
+            </div>
+            <div class="result-cell highlight">
+              <div class="result-value accent" id="est-assets-mid"></div>
+              <div class="result-label">Est. discovered assets</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-value" id="est-assets-high"></div>
+              <div class="result-label">Est. discovered assets</div>
+            </div>
+          </div>
+
+          <div class="results-grid">
+            <div class="result-cell">
+              <div class="result-value" id="monthly-low"></div>
+              <div class="result-label">Estimated / month</div>
+            </div>
+            <div class="result-cell highlight">
+              <div class="result-value accent" id="monthly-mid"></div>
+              <div class="result-label">Estimated / month</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-value" id="monthly-high"></div>
+              <div class="result-label">Estimated / month</div>
+            </div>
+          </div>
+
+          <div class="results-grid" style="margin-bottom:0;">
+            <div class="result-cell">
+              <div class="result-value" id="annual-low"></div>
+              <div class="result-label">Estimated / year</div>
+            </div>
+            <div class="result-cell highlight">
+              <div class="result-value accent" id="annual-mid"></div>
+              <div class="result-label">Estimated / year</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-value" id="annual-high"></div>
+              <div class="result-label">Estimated / year</div>
+            </div>
+          </div>
+
+          <div class="delta-bar">
+            <div class="delta-cell">
+              <div class="delta-value" id="delta-low"></div>
+              <div class="delta-label">Over budget vs. known assets (conservative)</div>
+            </div>
+            <div class="delta-cell">
+              <div class="delta-value" id="delta-mid"></div>
+              <div class="delta-label">Over budget vs. known assets (mid-range)</div>
+            </div>
+            <div class="delta-cell">
+              <div class="delta-value" id="delta-high"></div>
+              <div class="delta-label">Over budget vs. known assets (higher end)</div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <span class="callout-label">Before you sign</span>
+            <p>These estimates reflect typical discovery multipliers for each environment type. Your actual discovered asset count may be higher or lower. Ask your vendor to run a seedless discovery sample before contract execution and price against that output — not against your known inventory. <a href="/guides/per-asset-pricing-trap/">Read the full guide on per-asset pricing &rarr;</a></p>
+          </div>
+
+        </div>
+
+        <div class="newsletter-block">
+          <span class="page-label">Stay current</span>
+          <p>M&W Security covers the cybersecurity software market the way your vendors hope you won't. Biweekly.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="your@email.com" aria-label="Email address">
+            <button type="button">Subscribe free</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/newsletter.js"></script>
+
+  <script>
+  function selectOption(group, radio) {
+    document.querySelectorAll('input[name="' + group + '"]').forEach(function(r) {
+      r.closest('.calc-option').classList.remove('selected');
+    });
+    radio.closest('.calc-option').classList.add('selected');
+  }
+
+  function fmt(n) {
+    return '$' + Math.round(n).toLocaleString('en-US');
+  }
+
+  function fmtN(n) {
+    return Math.round(n).toLocaleString('en-US');
+  }
+
+  function calculate() {
+    var knownRaw = document.getElementById('known-assets').value;
+    var known = parseFloat(knownRaw);
+    if (!knownRaw || isNaN(known) || known <= 0) {
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('results-empty').style.display = 'block';
+      return;
+    }
+
+    var subs = parseFloat(document.getElementById('subsidiaries').value) || 0;
+    var ma = document.querySelector('input[name="ma"]:checked').value;
+    var devops = document.querySelector('input[name="devops"]:checked').value;
+
+    // Multiplier components
+    var baseMultiplier = 1.0;
+    var subMultiplier  = subs * 0.15;
+    var maMultiplier   = ma === 'none' ? 0 : ma === 'some' ? 0.3 : 0.6;
+    var devopsMultiplier = devops === 'stable' ? 0 : devops === 'moderate' ? 0.2 : 0.5;
+    var totalMultiplier = baseMultiplier + subMultiplier + maMultiplier + devopsMultiplier;
+
+    // Estimated discovered assets (low / mid / high = multiplier ±15%)
+    var estLow  = known * (totalMultiplier * 0.85);
+    var estMid  = known * totalMultiplier;
+    var estHigh = known * (totalMultiplier * 1.15);
+
+    // Daily rates
+    var rLow = 0.01, rMid = 0.02, rHigh = 0.03;
+
+    // Monthly and annual costs
+    var monthlyLow  = estLow  * rLow  * 30;
+    var monthlyMid  = estMid  * rMid  * 30;
+    var monthlyHigh = estHigh * rHigh * 30;
+
+    var annualLow  = monthlyLow  * 12;
+    var annualMid  = monthlyMid  * 12;
+    var annualHigh = monthlyHigh * 12;
+
+    // Budget based on known assets only
+    var budgetLow  = known * rLow  * 30 * 12;
+    var budgetMid  = known * rMid  * 30 * 12;
+    var budgetHigh = known * rHigh * 30 * 12;
+
+    var deltaLow  = annualLow  - budgetLow;
+    var deltaMid  = annualMid  - budgetMid;
+    var deltaHigh = annualHigh - budgetHigh;
+
+    // Breakdown text
+    var breakdownParts = [
+      '<strong>' + totalMultiplier.toFixed(2) + 'x</strong> estimated discovery multiplier based on your inputs:'
+    ];
+    breakdownParts.push('Base 1.0x');
+    if (subs > 0) breakdownParts.push(subs + ' ' + (subs === 1 ? 'subsidiary' : 'subsidiaries') + ' +' + subMultiplier.toFixed(2) + 'x');
+    if (maMultiplier > 0) breakdownParts.push('M&A activity +' + maMultiplier.toFixed(2) + 'x');
+    if (devopsMultiplier > 0) breakdownParts.push('DevOps/cloud activity +' + devopsMultiplier.toFixed(2) + 'x');
+
+    document.getElementById('multiplier-breakdown').innerHTML =
+      breakdownParts[0] + '<br>' + breakdownParts.slice(1).join(' &nbsp;·&nbsp; ');
+
+    document.getElementById('est-assets-low').textContent  = fmtN(estLow);
+    document.getElementById('est-assets-mid').textContent  = fmtN(estMid);
+    document.getElementById('est-assets-high').textContent = fmtN(estHigh);
+
+    document.getElementById('monthly-low').textContent  = fmt(monthlyLow);
+    document.getElementById('monthly-mid').textContent  = fmt(monthlyMid);
+    document.getElementById('monthly-high').textContent = fmt(monthlyHigh);
+
+    document.getElementById('annual-low').textContent  = fmt(annualLow);
+    document.getElementById('annual-mid').textContent  = fmt(annualMid);
+    document.getElementById('annual-high').textContent = fmt(annualHigh);
+
+    document.getElementById('delta-low').textContent  = '+' + fmt(deltaLow);
+    document.getElementById('delta-mid').textContent  = '+' + fmt(deltaMid);
+    document.getElementById('delta-high').textContent = '+' + fmt(deltaHigh);
+
+    document.getElementById('results-empty').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+  }
+  </script>
+
+</body>
+</html>
