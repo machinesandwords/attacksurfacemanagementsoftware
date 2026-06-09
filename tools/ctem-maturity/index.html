@@ -172,7 +172,7 @@
 
         <p class="lead">Rate your current program against the five CTEM stages to find out where you are, where you're stalling, and what to focus on next. Interactive use is free. Export requires a premium subscription.</p>
 
-        <p style="font-size:var(--small); color:var(--mid); margin-bottom:32px;">Score each criterion based on your current program — not what the platform can do, but what your team is actually doing today. <strong style="color:var(--charcoal);">0 = not in place</strong> &nbsp;·&nbsp; <strong style="color:#b45309;">1 = partially in place</strong> &nbsp;·&nbsp; <strong style="color:var(--accent);">2 = fully operational</strong></p>
+        <p style="font-size:var(--small); color:var(--mid); margin-bottom:32px;">Score each criterion based on your current program — not what the platform can do, but what your team is actually doing today. <strong style="color:var(--charcoal);">0 = not in place</strong> &nbsp;·&nbsp; <strong style="color:#b45309;">1 = partially in place</strong> &nbsp;·&nbsp; <strong style="color:var(--accent);">2 = fully operational</strong> &nbsp;·&nbsp; <button id="reset-btn" style="background:none; border:none; font-family:'Space Mono',monospace; font-size:11px; color:var(--faint); cursor:pointer; text-decoration:underline; padding:0;">Reset all scores</button></p>
 
         <!-- Stage blocks -->
         <div id="assessment-container"></div>
@@ -607,6 +607,19 @@
 
   restoreState();
   updateTotals();
+
+  // Reset button
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    STAGES.forEach(function(stage) {
+      stage.items.forEach(function(item) {
+        scores[item.id] = null;
+        var btns = document.querySelectorAll('[data-item="' + item.id + '"]');
+        btns.forEach(function(b) { b.className = 'score-btn'; });
+      });
+    });
+    try { localStorage.removeItem('ctem_maturity_scores'); } catch(e) {}
+    updateTotals();
+  });
 
   STAGES.forEach(function(stage) {
     stage.items.forEach(function(item) {
