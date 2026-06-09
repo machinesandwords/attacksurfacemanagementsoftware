@@ -150,17 +150,19 @@
         <div class="vendor-bar">
           <div class="vendor-cell">
             <label for="v1-select">Vendor A</label>
-            <select id="v1-select" style="flex:1; background:var(--bg); border:var(--hairline); font-family:'Space Mono',monospace; font-size:var(--small); color:var(--charcoal); padding:6px 10px; outline:none; border-radius:0;">
-              <option value="">— Select or type below —</option>
+            <select id="v1-select" style="flex:1; min-width:0; background:var(--bg); border:var(--hairline); font-family:'Space Mono',monospace; font-size:11px; color:var(--charcoal); padding:6px 8px; outline:none; border-radius:0;">
+              <option value="">— Select vendor —</option>
+              <option value="other">Other / not listed</option>
             </select>
-            <input type="text" id="v1-name" placeholder="Or type vendor name" autocomplete="off">
+            <input type="text" id="v1-name" placeholder="Type vendor name" autocomplete="off" style="display:none; flex:1; min-width:0; background:var(--bg); border:var(--hairline); font-family:'Space Mono',monospace; font-size:11px; color:var(--charcoal); padding:6px 8px; outline:none;">
           </div>
           <div class="vendor-cell">
             <label for="v2-select">Vendor B</label>
-            <select id="v2-select" style="flex:1; background:var(--bg); border:var(--hairline); font-family:'Space Mono',monospace; font-size:var(--small); color:var(--charcoal); padding:6px 10px; outline:none; border-radius:0;">
-              <option value="">— Select or type below —</option>
+            <select id="v2-select" style="flex:1; min-width:0; background:var(--bg); border:var(--hairline); font-family:'Space Mono',monospace; font-size:11px; color:var(--charcoal); padding:6px 8px; outline:none; border-radius:0;">
+              <option value="">— Select vendor —</option>
+              <option value="other">Other / not listed</option>
             </select>
-            <input type="text" id="v2-name" placeholder="Or type vendor name" autocomplete="off">
+            <input type="text" id="v2-name" placeholder="Type vendor name" autocomplete="off" style="display:none; flex:1; min-width:0; background:var(--bg); border:var(--hairline); font-family:'Space Mono',monospace; font-size:11px; color:var(--charcoal); padding:6px 8px; outline:none;">
           </div>
         </div>
 
@@ -224,6 +226,11 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', function() {
+
+  // Ensure text inputs are hidden on load
+  document.getElementById('v1-name').style.display = 'none';
+  document.getElementById('v2-name').style.display = 'none';
+
   var CATEGORIES = [
     {
       id: 'discovery',
@@ -310,8 +317,20 @@
       if (s) scores = JSON.parse(s);
       if (n) {
         vendorNames = JSON.parse(n);
-        document.getElementById('v1-name').value = vendorNames.v1 !== 'Vendor A' ? vendorNames.v1 : '';
-        document.getElementById('v2-name').value = vendorNames.v2 !== 'Vendor B' ? vendorNames.v2 : '';
+        ['v1','v2'].forEach(function(which) {
+          var name = vendorNames[which];
+          var sel  = document.getElementById(which + '-select');
+          var inp  = document.getElementById(which + '-name');
+          var knownOpt = sel.querySelector('option[value="' + name + '"]');
+          if (knownOpt) {
+            sel.value = name;
+            inp.style.display = 'none';
+          } else if (name && name !== (which === 'v1' ? 'Vendor A' : 'Vendor B')) {
+            sel.value = 'other';
+            inp.value = name;
+            inp.style.display = 'block';
+          }
+        });
       }
     } catch(e) {}
   }
@@ -323,11 +342,12 @@
       var sorted = data.slice().sort(function(a,b) { return a.name.localeCompare(b.name); });
       ['v1-select','v2-select'].forEach(function(id) {
         var sel = document.getElementById(id);
+        var otherOpt = sel.querySelector('option[value="other"]');
         sorted.forEach(function(v) {
           var opt = document.createElement('option');
           opt.value = v.name;
           opt.textContent = v.name;
-          sel.appendChild(opt);
+          sel.insertBefore(opt, otherOpt);
         });
       });
     })
@@ -337,7 +357,12 @@
   function updateVendorLabel(which) {
     var selectEl = document.getElementById(which + '-select');
     var inputEl  = document.getElementById(which + '-name');
-    var name = (selectEl.value || inputEl.value || (which === 'v1' ? 'Vendor A' : 'Vendor B')).trim();
+    var name;
+    if (selectEl.value === 'other' || selectEl.value === '') {
+      name = (inputEl.value || (which === 'v1' ? 'Vendor A' : 'Vendor B')).trim();
+    } else {
+      name = selectEl.value;
+    }
     vendorNames[which] = name;
     document.getElementById('label-' + which).textContent = name;
     document.querySelectorAll('.score-col-label[data-which="' + which + '"]').forEach(function(el) {
@@ -349,11 +374,17 @@
 
   ['v1','v2'].forEach(function(which) {
     document.getElementById(which + '-select').addEventListener('change', function() {
-      if (this.value) document.getElementById(which + '-name').value = '';
+      var inputEl = document.getElementById(which + '-name');
+      if (this.value === 'other') {
+        inputEl.style.display = 'block';
+        inputEl.focus();
+      } else {
+        inputEl.style.display = 'none';
+        inputEl.value = '';
+      }
       updateVendorLabel(which);
     });
     document.getElementById(which + '-name').addEventListener('input', function() {
-      if (this.value) document.getElementById(which + '-select').value = '';
       updateVendorLabel(which);
     });
   });
