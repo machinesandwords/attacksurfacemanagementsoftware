@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>M&A Security Readiness Checklist | Attack Surface Management Software</title>
+  <meta name="description" content="A pre-close and day-one security checklist for acquisitions. Know what to ask before the deal closes and what to do the moment it does.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/tools/ma-security-checklist/">
+
+  <meta property="og:title" content="M&A Security Readiness Checklist | Attack Surface Management Software">
+  <meta property="og:description" content="A pre-close and day-one security checklist for acquisitions. Know what to ask before the deal closes and what to do the moment it does.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/tools/ma-security-checklist/">
+  <meta property="og:type" content="website">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "M&A Security Readiness Checklist",
+    "url": "https://attacksurfacemanagementsoftware.com/tools/ma-security-checklist/",
+    "description": "A pre-close and day-one security checklist for acquisitions.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://attacksurfacemanagementsoftware.com/tools/" },
+      { "@type": "ListItem", "position": 3, "name": "M&A Security Readiness Checklist", "item": "https://attacksurfacemanagementsoftware.com/tools/ma-security-checklist/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+
+  <style>
+    /* ── Acquisition name bar ── */
+    .acq-bar { border: var(--hairline); background: var(--surface); margin-bottom: 32px; display: flex; align-items: center; gap: 16px; padding: 14px 20px; box-sizing: border-box; width: 100%; }
+    .acq-bar label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); white-space: nowrap; flex-shrink: 0; }
+    .acq-bar input { flex: 1; min-width: 0; background: var(--bg); border: var(--hairline); font-family: 'Space Mono', monospace; font-size: var(--small); font-weight: 700; color: var(--charcoal); padding: 6px 10px; outline: none; border-radius: 0; }
+    .acq-bar input:focus { border-color: var(--accent); }
+    .acq-bar input::placeholder { color: var(--faint); font-weight: 400; }
+
+    /* ── Progress bar ── */
+    .progress-bar-wrap { border: var(--hairline); border-bottom: none; background: var(--charcoal); padding: 14px 20px; display: flex; align-items: center; gap: 16px; box-sizing: border-box; width: 100%; }
+    .progress-bar-track { flex: 1; height: 4px; background: rgba(255,255,255,0.15); position: relative; }
+    .progress-bar-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--accent); transition: width 0.3s ease; }
+    .progress-label { font-size: 11px; font-weight: 700; color: white; white-space: nowrap; }
+    .progress-count { font-size: 11px; color: var(--faint); white-space: nowrap; }
+
+    /* ── Section block ── */
+    .section-block { border: var(--hairline); border-bottom: none; border-top: none; box-sizing: border-box; width: 100%; }
+    .section-block:last-of-type { border-bottom: var(--hairline); margin-bottom: 32px; }
+    .section-header { padding: 10px 16px; background: var(--bg); border-bottom: var(--hairline); border-top: var(--hairline); display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+    .section-header:hover { background: var(--accent-pale); }
+    .section-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .section-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: white; padding: 2px 8px; flex-shrink: 0; }
+    .badge-pre { background: var(--mid); }
+    .badge-day1 { background: #991b1b; }
+    .badge-30day { background: #b45309; }
+    .section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--charcoal); }
+    .section-progress { font-size: 11px; font-weight: 700; color: var(--accent); }
+    .section-toggle { font-size: 14px; color: var(--faint); width: 16px; text-align: center; transition: transform 0.2s; }
+    .section-block.collapsed .section-toggle { transform: rotate(-90deg); }
+    .section-block.collapsed .section-items { display: none; }
+
+    /* ── Checklist item ── */
+    .check-item { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 14px; padding: 12px 16px; border-bottom: var(--hairline); cursor: pointer; }
+    .check-item:last-child { border-bottom: none; }
+    .check-item:hover { background: var(--bg); }
+    .check-item.done { background: var(--accent-pale); }
+    .check-box { width: 20px; height: 20px; border: var(--hairline); background: var(--bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; transition: background 0.1s, border-color 0.1s; }
+    .check-item.done .check-box { background: var(--accent); border-color: var(--accent); }
+    .check-mark { font-size: 12px; color: white; display: none; }
+    .check-item.done .check-mark { display: block; }
+    .check-text { font-size: var(--small); color: var(--charcoal); line-height: 1.6; }
+    .check-hint { font-size: 11px; color: var(--faint); font-style: italic; margin-top: 2px; line-height: 1.5; }
+    .check-item.done .check-text { color: var(--mid); }
+    .check-priority { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 1px 5px; border: 1px solid; margin-right: 6px; vertical-align: middle; white-space: nowrap; }
+    .priority-p0 { color: #991b1b; border-color: #991b1b; }
+    .priority-p1 { color: #b45309; border-color: #b45309; }
+
+    /* ── Gate bar ── */
+    .gate-bar { border: var(--hairline); background: var(--accent-pale); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; box-sizing: border-box; width: 100%; }
+    .gate-bar-copy { font-size: var(--small); color: var(--mid); line-height: 1.6; }
+    .gate-bar-copy strong { color: var(--charcoal); }
+    .btn-export { flex-shrink: 0; background: var(--accent); color: white; border: none; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 20px; cursor: pointer; border-radius: 0; white-space: nowrap; }
+    .btn-export:hover { background: var(--accent-dim); }
+
+    /* ── Modal ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(42,42,40,0.65); z-index: 200; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--surface); border: var(--hairline); max-width: 460px; width: 90%; padding: 28px; }
+    .modal-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .modal-top h2 { font-size: var(--h2); font-weight: 700; margin: 0; border: none; padding: 0; }
+    .modal-close { background: none; border: none; font-family: 'Space Mono', monospace; font-size: 18px; color: var(--faint); cursor: pointer; padding: 0; line-height: 1; }
+    .modal-close:hover { color: var(--charcoal); }
+    .modal-badge { display: inline-block; background: var(--accent); color: white; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; margin-bottom: 14px; }
+    .modal-box p { font-size: var(--small); color: var(--mid); line-height: 1.75; margin-bottom: 14px; }
+    .modal-box p strong { color: var(--charcoal); }
+    .modal-form { display: flex; gap: 8px; margin-bottom: 12px; }
+    .modal-form input[type="email"] { flex: 1; font-family: 'Space Mono', monospace; font-size: var(--small); padding: 8px 10px; border: var(--hairline); background: var(--bg); color: var(--charcoal); outline: none; border-radius: 0; }
+    .modal-form input[type="email"]:focus { border-color: var(--accent); }
+    .modal-form button { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 14px; background: var(--charcoal); color: white; border: none; cursor: pointer; border-radius: 0; white-space: nowrap; }
+    .modal-form button:hover { background: var(--accent); }
+    .modal-status { font-size: var(--small); min-height: 20px; margin-bottom: 12px; font-weight: 700; }
+    .modal-fine-print { font-size: 11px; color: var(--faint); line-height: 1.6; }
+    .modal-fine-print a { color: var(--faint); text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .gate-bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <div class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/tools/">Tools</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>M&amp;A Security Checklist</span>
+        </nav>
+
+        <span class="page-label">Tools</span>
+        <h1>M&amp;A security readiness checklist</h1>
+
+        <p class="lead">Your security team inherits everything the acquired company ever built, forgot about, or left misconfigured — at the moment the deal closes. This checklist covers what to ask before close and what to do the moment it does.</p>
+
+        <p style="font-size:var(--small); color:var(--mid); margin-bottom:24px;">Work through each section in order. P0 items cannot wait. P1 items should be complete within the first week. <a href="/guides/m-and-a-attack-surface/">Read the full guide &rarr;</a> &nbsp;·&nbsp; <button id="reset-btn" style="background:none; border:none; font-family:'Space Mono',monospace; font-size:11px; color:var(--faint); cursor:pointer; text-decoration:underline; padding:0;">Reset checklist</button></p>
+
+        <!-- Acquisition name -->
+        <div class="acq-bar">
+          <label for="acq-name">Acquisition</label>
+          <input type="text" id="acq-name" placeholder="Target company name" autocomplete="off">
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-bar-wrap">
+          <span class="progress-label" id="progress-label">0 of 15 complete</span>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+          </div>
+          <span class="progress-count" id="progress-pct">0%</span>
+        </div>
+
+        <!-- Checklist sections -->
+        <div id="checklist-container"></div>
+
+        <!-- Export gate -->
+        <div class="gate-bar">
+          <div class="gate-bar-copy">
+            <strong>Export your completed checklist.</strong> Download a PDF of your M&A security checklist — ready to share with your team or include in integration planning documentation. Requires a premium subscription.
+            <br><a href="/subscribe/" style="font-size:11px; color:var(--accent);">See what's in the paid edition &rarr;</a>
+          </div>
+          <button class="btn-export" id="export-btn">Export PDF &rarr;</button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Export modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h2>Export your checklist</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <span class="modal-badge">Premium feature</span>
+      <p>Enter your email to receive a free issue of <strong>M&W Security</strong> and unlock PDF export for this tool. Premium subscribers get full export access across the entire network.</p>
+      <p><strong>Your progress is saved.</strong> You won't lose your checklist.</p>
+      <div class="modal-form">
+        <input type="email" id="modal-email" placeholder="your@email.com" autocomplete="email">
+        <button id="modal-submit">Get access</button>
+      </div>
+      <div class="modal-status" id="modal-status"></div>
+      <div class="modal-fine-print">Already a premium subscriber? <a href="/subscribe/">Sign in &rarr;</a><br>By subscribing you agree to receive M&W Security. Unsubscribe anytime.</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/newsletter.js"></script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+  var SECTIONS = [
+    {
+      id: 'pre-close',
+      badge: 'Pre-close',
+      badgeCls: 'badge-pre',
+      title: 'Before the deal closes',
+      note: 'If you have access to the target before close, these reduce the exposure window at day one.',
+      items: [
+        { id: 'pc1', text: 'Run an external discovery sample against target domains', hint: 'Ask the vendor to run seedless discovery against the target\'s known domains and provide an asset count estimate. Compare against the target\'s declared inventory.', priority: null },
+        { id: 'pc2', text: 'Request penetration test results from the last 12 months', hint: 'Review findings, severity distribution, and remediation status. Open criticals or highs at close are your problem immediately.', priority: null },
+        { id: 'pc3', text: 'Request breach notification history', hint: 'Any incidents in the last 3 years — disclosed or handled quietly. Credentials from old breaches may still be circulating.', priority: null },
+        { id: 'pc4', text: 'Confirm which security tools are deployed', hint: 'EDR coverage, SIEM, vulnerability management, and identity protection. Gaps in coverage become your gaps at close.', priority: null },
+        { id: 'pc5', text: 'Identify IT and security team contacts who will remain post-close', hint: 'Know who owns what before the org chart changes. Institutional knowledge walks out with the people who leave.', priority: null }
+      ]
+    },
+    {
+      id: 'day-one',
+      badge: 'Day one',
+      badgeCls: 'badge-day1',
+      title: 'First 24 hours after close',
+      note: 'These cannot wait for integration planning. Do them before anything else.',
+      items: [
+        { id: 'd1', text: 'Run seedless discovery against all acquired domains', hint: 'Full zero-input discovery using the acquired company\'s name and all known domains. This is the baseline for everything that follows.', priority: 'p0' },
+        { id: 'd2', text: 'Pull breach database coverage for the acquired email domain', hint: 'Check HaveIBeenPwned, SpyCloud, or equivalent for the acquired company\'s email domain. Treat any exposed credentials as active and force rotation.', priority: 'p0' },
+        { id: 'd3', text: 'Flag EOL software and expired certificates as P0', hint: 'End-of-life software and expired certificates are the lowest-effort targets in the first weeks. Surface them immediately regardless of apparent asset criticality.', priority: 'p0' },
+        { id: 'd4', text: 'Identify dual-homed assets', hint: 'Assets with interfaces on both the acquired network and the internet are lateral movement paths into your environment that didn\'t exist before close.', priority: 'p0' },
+        { id: 'd5', text: 'Confirm EASM platform scope updated to include acquired infrastructure', hint: 'Add acquired domains to your EASM platform\'s discovery scope. This step is frequently missed during integration planning and creates a coverage gap.', priority: 'p1' }
+      ]
+    },
+    {
+      id: 'thirty-days',
+      badge: 'First 30 days',
+      badgeCls: 'badge-30day',
+      title: 'First 30 days',
+      note: 'Integration work that closes the structural gaps inherited at close.',
+      items: [
+        { id: 't1', text: 'Integrate acquired assets into vulnerability management program', hint: 'Authenticated scanning coverage extended to acquired infrastructure. Findings entered into the same prioritization and routing workflows as the rest of the estate.', priority: 'p1' },
+        { id: 't2', text: 'Establish ownership mapping for acquired infrastructure', hint: 'Connect discovered external assets to the team or individual responsible for remediation. Without this, every finding is unroutable.', priority: 'p1' },
+        { id: 't3', text: 'Confirm acquired infrastructure under EDR coverage', hint: 'Every endpoint in the acquired environment running a managed EDR agent. Unmanaged endpoints are visible to attackers and invisible to your security operations team.', priority: 'p1' },
+        { id: 't4', text: 'Review cloud account permissions and service account privileges', hint: 'Over-privileged service accounts in acquired cloud environments are common and high-risk. Audit and remediate before they are discovered externally.', priority: 'p1' },
+        { id: 't5', text: 'Establish SLA tiers for remediating inherited findings', hint: 'Define remediation deadlines for findings inherited at close based on severity and confirmed reachability. Without SLAs, inherited findings age indefinitely.', priority: null }
+      ]
+    }
+  ];
+
+  var TOTAL_ITEMS = 0;
+  SECTIONS.forEach(function(s) { TOTAL_ITEMS += s.items.length; });
+
+  var checked = {};
+  SECTIONS.forEach(function(s) {
+    s.items.forEach(function(item) { checked[item.id] = false; });
+  });
+
+  var acqName = '';
+
+  function saveState() {
+    try {
+      localStorage.setItem('ma_checklist', JSON.stringify(checked));
+      localStorage.setItem('ma_acq_name', acqName);
+    } catch(e) {}
+  }
+
+  function restoreState() {
+    try {
+      var c = localStorage.getItem('ma_checklist');
+      var n = localStorage.getItem('ma_acq_name');
+      if (c) checked = JSON.parse(c);
+      if (n) {
+        acqName = n;
+        document.getElementById('acq-name').value = n;
+      }
+    } catch(e) {}
+  }
+
+  // Acquisition name
+  document.getElementById('acq-name').addEventListener('input', function() {
+    acqName = this.value.trim();
+    saveState();
+  });
+
+  // Build sections
+  var container = document.getElementById('checklist-container');
+
+  SECTIONS.forEach(function(section) {
+    var block = document.createElement('div');
+    block.className = 'section-block';
+    block.id = 'section-' + section.id;
+
+    var header = document.createElement('div');
+    header.className = 'section-header';
+    header.innerHTML =
+      '<div class="section-title-wrap">' +
+        '<span class="section-badge ' + section.badgeCls + '">' + section.badge + '</span>' +
+        '<span class="section-title">' + section.title + '</span>' +
+      '</div>' +
+      '<span class="section-progress" id="sec-progress-' + section.id + '">0 / ' + section.items.length + '</span>' +
+      '<span class="section-toggle">▾</span>';
+    header.addEventListener('click', function() { block.classList.toggle('collapsed'); });
+
+    var itemsWrap = document.createElement('div');
+    itemsWrap.className = 'section-items';
+
+    if (section.note) {
+      var noteEl = document.createElement('div');
+      noteEl.style.cssText = 'padding:10px 16px; font-size:11px; color:var(--mid); border-bottom:var(--hairline); font-style:italic;';
+      noteEl.textContent = section.note;
+      itemsWrap.appendChild(noteEl);
+    }
+
+    section.items.forEach(function(item) {
+      var row = document.createElement('div');
+      row.className = 'check-item' + (checked[item.id] ? ' done' : '');
+      row.id = 'item-' + item.id;
+      row.innerHTML =
+        '<div class="check-box"><span class="check-mark">✓</span></div>' +
+        '<div class="check-text">' +
+          (item.priority ? '<span class="check-priority priority-' + item.priority + '">' + item.priority.toUpperCase() + '</span>' : '') +
+          item.text +
+          (item.hint ? '<div class="check-hint">' + item.hint + '</div>' : '') +
+        '</div>';
+
+      row.addEventListener('click', function() {
+        checked[item.id] = !checked[item.id];
+        row.classList.toggle('done', checked[item.id]);
+        saveState();
+        updateProgress();
+      });
+
+      itemsWrap.appendChild(row);
+    });
+
+    block.appendChild(header);
+    block.appendChild(itemsWrap);
+    container.appendChild(block);
+  });
+
+  function updateProgress() {
+    var total = 0;
+    SECTIONS.forEach(function(section) {
+      var secDone = 0;
+      section.items.forEach(function(item) {
+        if (checked[item.id]) { total++; secDone++; }
+      });
+      document.getElementById('sec-progress-' + section.id).textContent = secDone + ' / ' + section.items.length;
+    });
+
+    var pct = Math.round((total / TOTAL_ITEMS) * 100);
+    document.getElementById('progress-label').textContent = total + ' of ' + TOTAL_ITEMS + ' complete';
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+  }
+
+  // Reset
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    SECTIONS.forEach(function(s) {
+      s.items.forEach(function(item) {
+        checked[item.id] = false;
+        var row = document.getElementById('item-' + item.id);
+        if (row) row.classList.remove('done');
+      });
+    });
+    try {
+      localStorage.removeItem('ma_checklist');
+      localStorage.removeItem('ma_acq_name');
+    } catch(e) {}
+    document.getElementById('acq-name').value = '';
+    acqName = '';
+    updateProgress();
+  });
+
+  // Modal
+  var modalOverlay = document.getElementById('modal-overlay');
+  var modalClose   = document.getElementById('modal-close');
+  var modalSubmit  = document.getElementById('modal-submit');
+  var modalEmail   = document.getElementById('modal-email');
+  var modalStatus  = document.getElementById('modal-status');
+
+  document.getElementById('export-btn').addEventListener('click', function() {
+    modalOverlay.classList.add('open');
+    modalEmail.focus();
+  });
+  modalClose.addEventListener('click', function() { modalOverlay.classList.remove('open'); });
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) modalOverlay.classList.remove('open');
+  });
+
+  modalSubmit.addEventListener('click', function() {
+    var email = modalEmail.value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      modalStatus.style.color = '#991b1b';
+      modalStatus.textContent = 'Please enter a valid email address.';
+      return;
+    }
+    modalStatus.style.color = 'var(--faint)';
+    modalStatus.textContent = 'Subscribing...';
+    modalSubmit.disabled = true;
+
+    fetch('https://newsletter-attacksurfacemanagementsoftware.whereismy328.workers.dev/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.message === 'Subscribed') {
+          modalStatus.style.color = 'var(--accent)';
+          modalStatus.textContent = 'You\'re in. Generating your checklist...';
+          setTimeout(function() {
+            modalOverlay.classList.remove('open');
+            generatePDF();
+          }, 1200);
+        } else {
+          modalStatus.style.color = '#991b1b';
+          modalStatus.textContent = 'Something went wrong. Please try again.';
+          modalSubmit.disabled = false;
+        }
+      })
+      .catch(function() {
+        modalStatus.style.color = '#991b1b';
+        modalStatus.textContent = 'Something went wrong. Please try again.';
+        modalSubmit.disabled = false;
+      });
+  });
+
+  function generatePDF() {
+    var date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+    var acq  = acqName || 'Unnamed acquisition';
+    var total = 0;
+    SECTIONS.forEach(function(s) {
+      s.items.forEach(function(item) { if (checked[item.id]) total++; });
+    });
+
+    var rows = '';
+    SECTIONS.forEach(function(section) {
+      rows += '<tr style="background:#f4f4f3;"><td colspan="2" style="padding:8px 12px;font-weight:700;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#6b6b68;border-bottom:1px solid #d8d8d6;">' + section.badge + ': ' + section.title + '</td></tr>';
+      section.items.forEach(function(item) {
+        var done = checked[item.id];
+        var statusBg = done ? '#e6f9f0' : '#fdecea';
+        var statusText = done ? '✓ Done' : '— Open';
+        var priorityHtml = item.priority ? '[' + item.priority.toUpperCase() + '] ' : '';
+        rows += '<tr>' +
+          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;color:#2a2a28;">' + priorityHtml + item.text + '</td>' +
+          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;background:' + statusBg + ';text-align:center;font-weight:700;white-space:nowrap;">' + statusText + '</td>' +
+          '</tr>';
+      });
+    });
+
+    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+      '<title>M&A Security Checklist: ' + acq + '</title>' +
+      '<style>body{font-family:monospace;color:#2a2a28;background:#fff;padding:32px;max-width:800px;margin:0 auto;}' +
+      'h1{font-size:18px;margin-bottom:4px;}' +
+      '.meta{font-size:12px;color:#6b6b68;margin-bottom:24px;}' +
+      '.summary{background:#2a2a28;padding:16px 20px;margin-bottom:32px;}' +
+      '.sum-acq{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;}' +
+      '.sum-progress{font-size:12px;color:#9b9b98;}' +
+      'table{width:100%;border-collapse:collapse;border:1px solid #d8d8d6;}' +
+      'th{padding:8px 12px;font-size:11px;text-align:left;text-transform:uppercase;letter-spacing:0.05em;color:#6b6b68;border-bottom:2px solid #2a2a28;background:#f4f4f3;}' +
+      '.footer{margin-top:32px;font-size:11px;color:#9b9b98;border-top:1px solid #d8d8d6;padding-top:16px;}' +
+      '@media print{body{padding:16px;}}' +
+      '</style></head><body>' +
+      '<h1>M&A Security Readiness Checklist</h1>' +
+      '<div class="meta">Generated ' + date + ' &nbsp;·&nbsp; attacksurfacemanagementsoftware.com</div>' +
+      '<div class="summary">' +
+        '<div class="sum-acq">' + acq + '</div>' +
+        '<div class="sum-progress">' + total + ' of ' + TOTAL_ITEMS + ' items complete</div>' +
+      '</div>' +
+      '<table><thead><tr><th style="width:75%;">Item</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div class="footer">P0 = cannot wait &nbsp;·&nbsp; P1 = complete within first week<br>M&W Security covers the cybersecurity software market the way your vendors hope you won\'t. machinesandwords.com</div>' +
+      '</body></html>';
+
+    var win = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+    setTimeout(function() { win.print(); }, 500);
+  }
+
+  restoreState();
+  updateProgress();
+
+  }); // end DOMContentLoaded
+  </script>
+
+</body>
+</html>
