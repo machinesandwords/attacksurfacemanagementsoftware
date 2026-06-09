@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>CTEM Program Maturity Assessment | Attack Surface Management Software</title>
+  <meta name="description" content="Rate your current exposure management program against the five CTEM stages. Find out where you are, where you're stalling, and what to focus on next.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/tools/ctem-maturity/">
+
+  <meta property="og:title" content="CTEM Program Maturity Assessment | Attack Surface Management Software">
+  <meta property="og:description" content="Rate your current exposure management program against the five CTEM stages. Find out where you are, where you're stalling, and what to focus on next.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/tools/ctem-maturity/">
+  <meta property="og:type" content="website">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "CTEM Program Maturity Assessment",
+    "url": "https://attacksurfacemanagementsoftware.com/tools/ctem-maturity/",
+    "description": "Rate your current exposure management program against the five CTEM stages.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://attacksurfacemanagementsoftware.com/tools/" },
+      { "@type": "ListItem", "position": 3, "name": "CTEM Maturity Assessment", "item": "https://attacksurfacemanagementsoftware.com/tools/ctem-maturity/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+
+  <style>
+    /* ── Stage block ── */
+    .stage-block { border: var(--hairline); border-bottom: none; box-sizing: border-box; width: 100%; }
+    .stage-block:last-of-type { border-bottom: var(--hairline); margin-bottom: 32px; }
+    .stage-header { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 10px 16px; background: var(--bg); border-bottom: var(--hairline); cursor: pointer; user-select: none; }
+    .stage-header:hover { background: var(--accent-pale); }
+    .stage-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .stage-number { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: var(--accent-pale); border: 1px solid var(--accent); padding: 1px 7px; flex-shrink: 0; }
+    .stage-title { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--charcoal); }
+    .stage-score-display { font-size: var(--small); font-weight: 700; color: var(--accent); }
+    .stage-toggle { font-size: 14px; color: var(--faint); width: 16px; text-align: center; transition: transform 0.2s; }
+    .stage-block.collapsed .stage-toggle { transform: rotate(-90deg); }
+    .stage-block.collapsed .stage-items { display: none; }
+    .stage-block.collapsed .stage-bar-row { display: none; }
+
+    /* ── Assessment item ── */
+    .assess-item { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 16px; padding: 12px 16px; border-bottom: var(--hairline); }
+    .assess-item:last-child { border-bottom: none; }
+    .item-text { font-size: var(--small); color: var(--charcoal); line-height: 1.6; }
+    .item-hint { font-size: 11px; color: var(--faint); font-style: italic; margin-top: 2px; line-height: 1.5; }
+    .score-col { display: flex; flex-direction: column; align-items: center; gap: 3px; flex-shrink: 0; }
+    .score-btns { display: flex; gap: 2px; }
+    .score-btn { width: 28px; height: 28px; border: var(--hairline); background: var(--bg); font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--faint); cursor: pointer; border-radius: 0; display: flex; align-items: center; justify-content: center; transition: background 0.1s, color 0.1s, border-color 0.1s; }
+    .score-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .score-btn.active-0 { background: #fee2e2; border-color: #991b1b; color: #991b1b; }
+    .score-btn.active-1 { background: #fef3c7; border-color: #b45309; color: #b45309; }
+    .score-btn.active-2 { background: var(--accent-pale); border-color: var(--accent); color: var(--accent); }
+
+    /* ── Stage progress bar ── */
+    .stage-bar-row { background: var(--surface); padding: 7px 16px; display: flex; align-items: center; gap: 8px; border-top: var(--hairline); }
+    .stage-bar-track { flex: 1; height: 4px; background: var(--border); position: relative; }
+    .stage-bar-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--accent); transition: width 0.3s ease; }
+    .stage-bar-label { font-size: 11px; font-weight: 700; color: var(--faint); min-width: 80px; text-align: right; }
+
+    /* ── Overall score bar ── */
+    .overall-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: var(--hairline); margin-bottom: 32px; box-sizing: border-box; width: 100%; }
+    .overall-cell { background: var(--charcoal); padding: 16px 20px; display: flex; align-items: baseline; gap: 10px; }
+    .overall-score { font-size: 32px; font-weight: 700; color: var(--accent); line-height: 1; }
+    .overall-denom { font-size: var(--small); color: var(--faint); }
+    .overall-label { font-size: 11px; font-weight: 700; color: white; letter-spacing: 0.04em; margin-left: auto; }
+    .overall-maturity { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 1px 6px; margin-left: 6px; white-space: nowrap; }
+
+    /* ── Stage summary grid ── */
+    .stage-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: var(--hairline); margin-bottom: 32px; box-sizing: border-box; width: 100%; }
+    .stage-summary-cell { background: var(--surface); padding: 14px 12px; text-align: center; }
+    .stage-summary-cell.stalled { background: #fef3c7; }
+    .stage-summary-cell.strong { background: var(--accent-pale); }
+    .stage-summary-num { font-size: var(--h2); font-weight: 700; color: var(--charcoal); margin-bottom: 3px; }
+    .stage-summary-name { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+    .stage-summary-level { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 1px 5px; }
+    .level-initial { color: #991b1b; border: 1px solid #991b1b; }
+    .level-developing { color: #b45309; border: 1px solid #b45309; }
+    .level-operational { color: var(--accent); border: 1px solid var(--accent); }
+
+    /* ── Focus callout ── */
+    .focus-block { border: var(--hairline); border-left: 3px solid var(--accent); background: var(--surface); padding: 16px 20px; margin-bottom: 32px; }
+    .focus-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .focus-text { font-size: var(--small); color: var(--mid); line-height: 1.75; }
+    .focus-text strong { color: var(--charcoal); }
+
+    /* ── Gate bar ── */
+    .gate-bar { border: var(--hairline); background: var(--accent-pale); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; box-sizing: border-box; width: 100%; }
+    .gate-bar-copy { font-size: var(--small); color: var(--mid); line-height: 1.6; }
+    .gate-bar-copy strong { color: var(--charcoal); }
+    .btn-export { flex-shrink: 0; background: var(--accent); color: white; border: none; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 20px; cursor: pointer; border-radius: 0; white-space: nowrap; }
+    .btn-export:hover { background: var(--accent-dim); }
+
+    /* ── Modal ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(42,42,40,0.65); z-index: 200; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--surface); border: var(--hairline); max-width: 460px; width: 90%; padding: 28px; }
+    .modal-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .modal-top h2 { font-size: var(--h2); font-weight: 700; margin: 0; border: none; padding: 0; }
+    .modal-close { background: none; border: none; font-family: 'Space Mono', monospace; font-size: 18px; color: var(--faint); cursor: pointer; padding: 0; line-height: 1; }
+    .modal-close:hover { color: var(--charcoal); }
+    .modal-badge { display: inline-block; background: var(--accent); color: white; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; margin-bottom: 14px; }
+    .modal-box p { font-size: var(--small); color: var(--mid); line-height: 1.75; margin-bottom: 14px; }
+    .modal-box p strong { color: var(--charcoal); }
+    .modal-form { display: flex; gap: 8px; margin-bottom: 12px; }
+    .modal-form input[type="email"] { flex: 1; font-family: 'Space Mono', monospace; font-size: var(--small); padding: 8px 10px; border: var(--hairline); background: var(--bg); color: var(--charcoal); outline: none; border-radius: 0; }
+    .modal-form input[type="email"]:focus { border-color: var(--accent); }
+    .modal-form button { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 14px; background: var(--charcoal); color: white; border: none; cursor: pointer; border-radius: 0; white-space: nowrap; }
+    .modal-form button:hover { background: var(--accent); }
+    .modal-status { font-size: var(--small); min-height: 20px; margin-bottom: 12px; font-weight: 700; }
+    .modal-fine-print { font-size: 11px; color: var(--faint); line-height: 1.6; }
+    .modal-fine-print a { color: var(--faint); text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .assess-item { grid-template-columns: 1fr; }
+      .stage-summary { grid-template-columns: 1fr 1fr; }
+      .overall-bar { grid-template-columns: 1fr; }
+      .gate-bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <div class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/tools/">Tools</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>CTEM Maturity Assessment</span>
+        </nav>
+
+        <span class="page-label">Tools</span>
+        <h1>CTEM program maturity assessment</h1>
+
+        <p class="lead">Rate your current program against the five CTEM stages to find out where you are, where you're stalling, and what to focus on next. Interactive use is free. Export requires a premium subscription.</p>
+
+        <p style="font-size:var(--small); color:var(--mid); margin-bottom:32px;">Score each criterion based on your current program — not what the platform can do, but what your team is actually doing today. <strong style="color:var(--charcoal);">0 = not in place</strong> &nbsp;·&nbsp; <strong style="color:#b45309;">1 = partially in place</strong> &nbsp;·&nbsp; <strong style="color:var(--accent);">2 = fully operational</strong></p>
+
+        <!-- Overall score bar -->
+        <div class="overall-bar">
+          <div class="overall-cell">
+            <span class="overall-score" id="overall-score">0</span>
+            <span class="overall-denom">/ 32</span>
+            <span class="overall-label" id="overall-label">Program maturity</span>
+          </div>
+          <div class="overall-cell" style="flex-direction:column; align-items:flex-start; gap:4px;">
+            <div id="overall-focus" style="font-size:11px; color:var(--faint); line-height:1.5;">Score your program below to see your maturity level.</div>
+          </div>
+        </div>
+
+        <!-- Stage summary -->
+        <div class="stage-summary" id="stage-summary"></div>
+
+        <!-- Stage blocks -->
+        <div id="assessment-container"></div>
+
+        <!-- Focus recommendation -->
+        <div class="focus-block" id="focus-block" style="display:none;">
+          <div class="focus-label">Where to focus next</div>
+          <div class="focus-text" id="focus-text"></div>
+        </div>
+
+        <!-- Export gate -->
+        <div class="gate-bar">
+          <div class="gate-bar-copy">
+            <strong>Export your maturity report.</strong> Download a scored PDF of your CTEM program assessment — ready to share with your team or use in a conversation about program investment. Requires a premium subscription.
+            <br><a href="/subscribe/" style="font-size:11px; color:var(--accent);">See what's in the paid edition &rarr;</a>
+          </div>
+          <button class="btn-export" id="export-btn">Export PDF &rarr;</button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Export modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h2>Export your report</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <span class="modal-badge">Premium feature</span>
+      <p>Enter your email to receive a free issue of <strong>M&W Security</strong> and unlock PDF export for this tool. Premium subscribers get full export access across the entire network.</p>
+      <p><strong>Your scores are saved.</strong> You won't lose your assessment.</p>
+      <div class="modal-form">
+        <input type="email" id="modal-email" placeholder="your@email.com" autocomplete="email">
+        <button id="modal-submit">Get access</button>
+      </div>
+      <div class="modal-status" id="modal-status"></div>
+      <div class="modal-fine-print">Already a premium subscriber? <a href="/subscribe/">Sign in &rarr;</a><br>By subscribing you agree to receive M&W Security. Unsubscribe anytime.</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/newsletter.js"></script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+  var STAGES = [
+    {
+      id: 'scoping',
+      number: '01',
+      title: 'Scoping',
+      max: 6,
+      items: [
+        { id: 'sc1', text: 'Security program is tied to specific business outcomes', hint: 'Risk management is framed around business impact — operational downtime, regulatory exposure, data loss — not just vulnerability counts or compliance checkboxes.' },
+        { id: 'sc2', text: 'Asset inventory scope includes subsidiaries and third-party dependencies', hint: 'Scoping extends beyond directly-owned infrastructure to include subsidiaries operating under different brands and critical third-party dependencies.' },
+        { id: 'sc3', text: 'Crown jewel assets are formally defined and documented', hint: 'The assets whose compromise would cause the most significant business impact are explicitly identified and inform prioritization decisions.' }
+      ],
+      focus: 'Scoping is the foundation everything else builds on. Define your crown jewel assets first — the ones whose compromise would cause the most significant business impact. Then extend your inventory scope to include subsidiaries and critical third parties before investing further in discovery tooling.',
+      guides: []
+    },
+    {
+      id: 'discovery',
+      number: '02',
+      title: 'Discovery',
+      max: 6,
+      items: [
+        { id: 'di1', text: 'External attack surface is discovered continuously, not periodically', hint: 'Discovery runs as a continuous process — not quarterly scans or annual assessments — so new assets appear in scope as soon as they are deployed.' },
+        { id: 'di2', text: 'Discovery is seedless — not dependent on a pre-declared asset list', hint: 'The platform starts from a company name or domain and maps associated infrastructure autonomously, rather than scanning only what you tell it to look for.' },
+        { id: 'di3', text: 'Shadow IT and undeclared cloud assets are in scope', hint: 'Assets deployed outside IT governance — development infrastructure, forgotten subdomains, abandoned cloud instances — are actively discovered rather than assumed not to exist.' }
+      ],
+      focus: 'If discovery is periodic or seeded, you have visibility gaps that are structurally guaranteed to miss assets. The first investment is continuous, seedless discovery from a platform that does not require a pre-declared asset list. The second is confirming that shadow IT and subsidiary infrastructure are actually in scope — not just assumed to be.',
+      guides: ['/guides/seedless-discovery-spectrum/']
+    },
+    {
+      id: 'prioritization',
+      number: '03',
+      title: 'Prioritization',
+      max: 6,
+      items: [
+        { id: 'pr1', text: 'Risk scoring incorporates KEV/EPSS data alongside CVSS', hint: 'Findings are scored using CISA\'s Known Exploited Vulnerabilities catalog and EPSS exploitation probability — not just CVSS severity scores, which measure theoretical worst-case, not real-world likelihood.' },
+        { id: 'pr2', text: 'Asset criticality context informs prioritization', hint: 'A finding on a low-severity asset that holds privileged credentials or connects to crown jewel infrastructure is ranked accordingly — not by the asset\'s nominal label.' },
+        { id: 'pr3', text: 'Findings are filtered by confirmed reachability before queuing for remediation', hint: 'The team works findings that have been confirmed as reachable from the internet — not the full passive enumeration output, which includes assets protected by compensating controls.' }
+      ],
+      focus: 'Prioritization stalls most programs. The highest-leverage change is switching from CVSS-only scoring to KEV/EPSS-weighted scoring — it produces a materially different priority queue that reflects actual threat activity rather than theoretical severity. The second is confirming reachability before findings reach engineering queues, which eliminates false urgency and protects the team\'s trust in the program.',
+      guides: ['/guides/easm-implementation-stalled/']
+    },
+    {
+      id: 'validation',
+      number: '04',
+      title: 'Validation',
+      max: 6,
+      items: [
+        { id: 'va1', text: 'External exposures are actively validated before engineering time is spent', hint: 'The platform sends test payloads to confirm that a discovered exposure is actually reachable and exploitable — not just visible in passive enumeration — before a remediation ticket is created.' },
+        { id: 'va2', text: 'Compensating controls are factored into finding severity', hint: 'Assets protected by WAFs, IP allowlists, or geo-fencing are distinguished from genuinely exposed assets. Engineering time is not spent remediating exposures that upstream controls are already blocking.' },
+        { id: 'va3', text: 'Remediation actions are verified as having reduced external exposure', hint: 'After a fix is applied, the platform confirms the exposure no longer appears in external discovery — not just that a ticket was closed as remediated.' }
+      ],
+      focus: 'Validation is where most EASM programs stall. Without active reachability confirmation, engineering teams spend time on exposures that compensating controls are already handling — and trust in the program erodes. Start with remediation verification: "verified closed" must be a different state than "patched." Then invest in active validation tooling to filter findings before they reach engineering queues.',
+      guides: ['/landscape/market-direction/']
+    },
+    {
+      id: 'mobilization',
+      number: '05',
+      title: 'Mobilization',
+      max: 8,
+      items: [
+        { id: 'mo1', text: 'Every finding routes to a named owner automatically', hint: 'Asset ownership mapping exists and is current enough that a discovered asset can be matched to a specific team or individual without a manual investigation each time.' },
+        { id: 'mo2', text: 'Tickets arrive pre-populated with context the recipient can act on', hint: 'Findings reach infrastructure teams with asset details, business justification, severity, confirmed reachability status, and a clear description of required action — not raw alert data that requires translation.' },
+        { id: 'mo3', text: 'SLAs are defined and tracked for each finding tier', hint: 'Remediation deadlines exist across at least two or three tiers based on severity and asset criticality, and overdue items generate escalations through a defined path.' },
+        { id: 'mo4', text: 'Closure is verified externally, not just by ticket status', hint: '"Verified closed" is a distinct workflow state owned by the security team. Findings that do not verify on the next discovery run are reopened automatically or by process.' }
+      ],
+      focus: 'Mobilization is the stage where the program either produces closures or produces dashboards. The minimum viable fix requires two things: asset ownership mapping that is current enough to route findings automatically, and a "pending verification" ticket state that the security team owns. Neither requires a SOAR. Both require explicit process decisions that most teams have not made.',
+      guides: ['/guides/ctem-mobilization-without-soar/']
+    }
+  ];
+
+  var scores = {};
+  STAGES.forEach(function(stage) {
+    stage.items.forEach(function(item) {
+      scores[item.id] = null;
+    });
+  });
+
+  // Save/restore
+  function saveState() {
+    try { localStorage.setItem('ctem_maturity_scores', JSON.stringify(scores)); } catch(e) {}
+  }
+  function restoreState() {
+    try {
+      var s = localStorage.getItem('ctem_maturity_scores');
+      if (s) scores = JSON.parse(s);
+    } catch(e) {}
+  }
+
+  // Build stage summary placeholders
+  var summaryEl = document.getElementById('stage-summary');
+  STAGES.forEach(function(stage) {
+    var cell = document.createElement('div');
+    cell.className = 'stage-summary-cell';
+    cell.id = 'summary-' + stage.id;
+    cell.innerHTML =
+      '<div class="stage-summary-name">' + stage.title + '</div>' +
+      '<div class="stage-summary-num" id="sum-score-' + stage.id + '">0</div>' +
+      '<div class="stage-summary-level" id="sum-level-' + stage.id + '"></div>';
+    summaryEl.appendChild(cell);
+  });
+
+  // Build stage blocks
+  var container = document.getElementById('assessment-container');
+  STAGES.forEach(function(stage) {
+    var block = document.createElement('div');
+    block.className = 'stage-block';
+    block.id = 'stage-' + stage.id;
+
+    var header = document.createElement('div');
+    header.className = 'stage-header';
+    header.innerHTML =
+      '<div class="stage-title-wrap">' +
+        '<span class="stage-number">' + stage.number + '</span>' +
+        '<span class="stage-title">' + stage.title + '</span>' +
+      '</div>' +
+      '<span class="stage-score-display" id="stage-score-' + stage.id + '">0 / ' + stage.max + '</span>' +
+      '<span class="stage-toggle">▾</span>';
+    header.addEventListener('click', function() { block.classList.toggle('collapsed'); });
+
+    var itemsWrap = document.createElement('div');
+    itemsWrap.className = 'stage-items';
+
+    stage.items.forEach(function(item) {
+      var row = document.createElement('div');
+      row.className = 'assess-item';
+      row.innerHTML =
+        '<div class="item-text">' + item.text +
+          (item.hint ? '<div class="item-hint">' + item.hint + '</div>' : '') +
+        '</div>' +
+        '<div class="score-col">' +
+          '<div class="score-btns" id="btns-' + item.id + '">' +
+            '<button class="score-btn" data-item="' + item.id + '" data-val="0">0</button>' +
+            '<button class="score-btn" data-item="' + item.id + '" data-val="1">1</button>' +
+            '<button class="score-btn" data-item="' + item.id + '" data-val="2">2</button>' +
+          '</div>' +
+        '</div>';
+      itemsWrap.appendChild(row);
+    });
+
+    var barRow = document.createElement('div');
+    barRow.className = 'stage-bar-row';
+    barRow.innerHTML =
+      '<div class="stage-bar-track"><div class="stage-bar-fill" id="bar-' + stage.id + '" style="width:0%"></div></div>' +
+      '<span class="stage-bar-label" id="bar-label-' + stage.id + '">Not started</span>';
+
+    block.appendChild(header);
+    block.appendChild(itemsWrap);
+    block.appendChild(barRow);
+    container.appendChild(block);
+  });
+
+  // Score buttons
+  container.addEventListener('click', function(e) {
+    var btn = e.target.closest('.score-btn');
+    if (!btn) return;
+    var item = btn.dataset.item;
+    var val  = parseInt(btn.dataset.val);
+
+    if (scores[item] === val) {
+      scores[item] = null;
+    } else {
+      scores[item] = val;
+    }
+
+    var btns = document.querySelectorAll('[data-item="' + item + '"]');
+    btns.forEach(function(b) {
+      b.className = 'score-btn';
+      if (scores[item] !== null && parseInt(b.dataset.val) === scores[item]) {
+        b.classList.add('active-' + scores[item]);
+      }
+    });
+
+    saveState();
+    updateTotals();
+  });
+
+  function maturityLevel(score, max) {
+    var pct = score / max;
+    if (pct < 0.33) return { label: 'Initial',     cls: 'level-initial' };
+    if (pct < 0.67) return { label: 'Developing',  cls: 'level-developing' };
+    return                 { label: 'Operational', cls: 'level-operational' };
+  }
+
+  function overallMaturity(score) {
+    var pct = score / 32;
+    if (pct < 0.33) return 'Early stage';
+    if (pct < 0.5)  return 'Developing';
+    if (pct < 0.75) return 'Maturing';
+    return                 'Advanced';
+  }
+
+  function updateTotals() {
+    var grand = 0;
+    var lowestStage = null;
+    var lowestScore = Infinity;
+
+    STAGES.forEach(function(stage) {
+      var stageScore = 0;
+      stage.items.forEach(function(item) {
+        if (scores[item.id] !== null) stageScore += scores[item.id];
+      });
+
+      grand += stageScore;
+
+      var pct = Math.round((stageScore / stage.max) * 100);
+      var ml  = maturityLevel(stageScore, stage.max);
+
+      document.getElementById('stage-score-' + stage.id).textContent = stageScore + ' / ' + stage.max;
+      document.getElementById('bar-' + stage.id).style.width = pct + '%';
+      document.getElementById('bar-label-' + stage.id).textContent = ml.label;
+
+      // Summary cell
+      var sumScore = document.getElementById('sum-score-' + stage.id);
+      var sumLevel = document.getElementById('sum-level-' + stage.id);
+      var sumCell  = document.getElementById('summary-' + stage.id);
+      sumScore.textContent = stageScore + '/' + stage.max;
+      sumLevel.className = 'stage-summary-level ' + ml.cls;
+      sumLevel.textContent = ml.label;
+      sumCell.className = 'stage-summary-cell' + (ml.label === 'Initial' ? ' stalled' : ml.label === 'Operational' ? ' strong' : '');
+
+      // Track lowest-scoring stage that has been touched
+      var touched = stage.items.some(function(item) { return scores[item.id] !== null; });
+      if (touched && stageScore < lowestScore) {
+        lowestScore = stageScore;
+        lowestStage = stage;
+      }
+    });
+
+    // Overall
+    document.getElementById('overall-score').textContent = grand;
+    var om = overallMaturity(grand);
+    document.getElementById('overall-label').textContent = om;
+
+    var focusEl  = document.getElementById('overall-focus');
+    var focusBl  = document.getElementById('focus-block');
+    var focusTxt = document.getElementById('focus-text');
+
+    if (grand === 0) {
+      focusEl.textContent = 'Score your program below to see your maturity level.';
+      focusBl.style.display = 'none';
+    } else {
+      focusEl.innerHTML = '<strong style="color:white;">' + om + '</strong> &nbsp;·&nbsp; ' + grand + ' of 32 points scored';
+      if (lowestStage) {
+        focusBl.style.display = 'block';
+        var guideLinks = lowestStage.guides.length
+          ? ' <a href="' + lowestStage.guides[0] + '" style="color:var(--accent);">Read the guide &rarr;</a>'
+          : '';
+        focusTxt.innerHTML = '<strong>Stage ' + lowestStage.number + ': ' + lowestStage.title + '</strong> is your lowest-scoring stage. ' + lowestStage.focus + guideLinks;
+      }
+    }
+  }
+
+  // Modal
+  var modalOverlay = document.getElementById('modal-overlay');
+  var modalClose   = document.getElementById('modal-close');
+  var modalSubmit  = document.getElementById('modal-submit');
+  var modalEmail   = document.getElementById('modal-email');
+  var modalStatus  = document.getElementById('modal-status');
+
+  document.getElementById('export-btn').addEventListener('click', function() {
+    modalOverlay.classList.add('open');
+    modalEmail.focus();
+  });
+  modalClose.addEventListener('click', function() { modalOverlay.classList.remove('open'); });
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) modalOverlay.classList.remove('open');
+  });
+
+  modalSubmit.addEventListener('click', function() {
+    var email = modalEmail.value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      modalStatus.style.color = '#991b1b';
+      modalStatus.textContent = 'Please enter a valid email address.';
+      return;
+    }
+    modalStatus.style.color = 'var(--faint)';
+    modalStatus.textContent = 'Subscribing...';
+    modalSubmit.disabled = true;
+
+    fetch('https://newsletter-attacksurfacemanagementsoftware.whereismy328.workers.dev/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.message === 'Subscribed') {
+          modalStatus.style.color = 'var(--accent)';
+          modalStatus.textContent = 'You\'re in. Generating your report...';
+          setTimeout(function() {
+            modalOverlay.classList.remove('open');
+            generatePDF();
+          }, 1200);
+        } else {
+          modalStatus.style.color = '#991b1b';
+          modalStatus.textContent = 'Something went wrong. Please try again.';
+          modalSubmit.disabled = false;
+        }
+      })
+      .catch(function() {
+        modalStatus.style.color = '#991b1b';
+        modalStatus.textContent = 'Something went wrong. Please try again.';
+        modalSubmit.disabled = false;
+      });
+  });
+
+  function generatePDF() {
+    var date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+    var grand = 0;
+    var rows = '';
+
+    STAGES.forEach(function(stage) {
+      var stageScore = 0;
+      stage.items.forEach(function(item) {
+        if (scores[item.id] !== null) stageScore += scores[item.id];
+      });
+      grand += stageScore;
+      var ml = maturityLevel(stageScore, stage.max);
+
+      rows += '<tr style="background:#f4f4f3;"><td colspan="2" style="padding:8px 12px;font-weight:700;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#6b6b68;border-bottom:1px solid #d8d8d6;">' +
+        'Stage ' + stage.number + ': ' + stage.title + ' &nbsp;·&nbsp; ' + stageScore + '/' + stage.max + ' &nbsp;·&nbsp; ' + ml.label +
+        '</td></tr>';
+
+      stage.items.forEach(function(item) {
+        var s = scores[item.id];
+        var label = s === null ? '—' : s === 0 ? '0 — Not in place' : s === 1 ? '1 — Partial' : '2 — Operational';
+        var bg = s === 2 ? '#e6f9f0' : s === 1 ? '#fef9e7' : s === 0 ? '#fdecea' : '';
+        rows += '<tr>' +
+          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;color:#2a2a28;">' + item.text + '</td>' +
+          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;background:' + bg + ';text-align:center;font-weight:700;white-space:nowrap;">' + label + '</td>' +
+          '</tr>';
+      });
+    });
+
+    var om = overallMaturity(grand);
+    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+      '<title>CTEM Maturity Assessment</title>' +
+      '<style>body{font-family:monospace;color:#2a2a28;background:#fff;padding:32px;max-width:800px;margin:0 auto;}' +
+      'h1{font-size:18px;margin-bottom:4px;}' +
+      '.meta{font-size:12px;color:#6b6b68;margin-bottom:24px;}' +
+      '.summary{display:flex;gap:1px;background:#d8d8d6;border:1px solid #d8d8d6;margin-bottom:32px;}' +
+      '.sum-cell{flex:1;background:#2a2a28;padding:16px 20px;}' +
+      '.sum-score{font-size:32px;font-weight:700;color:#C0392B;}' +
+      '.sum-label{font-size:11px;color:#fff;margin-top:4px;}' +
+      'table{width:100%;border-collapse:collapse;border:1px solid #d8d8d6;}' +
+      'th{padding:8px 12px;font-size:11px;text-align:left;text-transform:uppercase;letter-spacing:0.05em;color:#6b6b68;border-bottom:2px solid #2a2a28;background:#f4f4f3;}' +
+      '.footer{margin-top:32px;font-size:11px;color:#9b9b98;border-top:1px solid #d8d8d6;padding-top:16px;}' +
+      '@media print{body{padding:16px;}}' +
+      '</style></head><body>' +
+      '<h1>CTEM Program Maturity Assessment</h1>' +
+      '<div class="meta">Generated ' + date + ' &nbsp;·&nbsp; attacksurfacemanagementsoftware.com &nbsp;·&nbsp; Independent. No vendor relationships.</div>' +
+      '<div class="summary">' +
+        '<div class="sum-cell"><div class="sum-score">' + grand + '<span style="font-size:16px;color:#9b9b98"> / 32</span></div><div class="sum-label">Overall: ' + om + '</div></div>' +
+      '</div>' +
+      '<table><thead><tr><th style="width:70%;">Criterion</th><th>Score</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div class="footer">0 = not in place &nbsp;·&nbsp; 1 = partially in place &nbsp;·&nbsp; 2 = fully operational &nbsp;·&nbsp; Maximum 32 points<br>M&W Security covers the cybersecurity software market the way your vendors hope you won\'t. machinesandwords.com</div>' +
+      '</body></html>';
+
+    var win = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+    setTimeout(function() { win.print(); }, 500);
+  }
+
+  restoreState();
+  updateTotals();
+
+  STAGES.forEach(function(stage) {
+    stage.items.forEach(function(item) {
+      var val = scores[item.id];
+      if (val !== null) {
+        var btns = document.querySelectorAll('[data-item="' + item.id + '"]');
+        btns.forEach(function(b) {
+          if (parseInt(b.dataset.val) === val) b.classList.add('active-' + val);
+        });
+      }
+    });
+  });
+
+  }); // end DOMContentLoaded
+  </script>
+
+</body>
+</html>
