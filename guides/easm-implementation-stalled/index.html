@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>Why Your EASM Implementation Stalled at Prioritization | Attack Surface Management Software</title>
+  <meta name="description" content="The platform is working. So why is the program going nowhere?">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/guides/easm-prioritization/">
+
+  <meta property="og:title" content="Why Your EASM Implementation Stalled at Prioritization | Attack Surface Management Software">
+  <meta property="og:description" content="The platform is working. So why is the program going nowhere?">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/guides/easm-prioritization/">
+  <meta property="og:type" content="article">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Why Your EASM Implementation Stalled at Prioritization",
+    "description": "The four patterns that cause EASM prioritization to break down.",
+    "url": "https://attacksurfacemanagementsoftware.com/guides/easm-prioritization/",
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "publisher": { "@type": "Organization", "name": "Attack Surface Management Software", "url": "https://attacksurfacemanagementsoftware.com" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://attacksurfacemanagementsoftware.com/guides/" },
+      { "@type": "ListItem", "position": 3, "name": "Why Your EASM Implementation Stalled at Prioritization", "item": "https://attacksurfacemanagementsoftware.com/guides/easm-prioritization/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <article class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/guides/">Guides</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Why your EASM implementation stalled at prioritization</span>
+        </nav>
+
+        <span class="page-label">Guide</span>
+        <h1>Why your EASM implementation stalled at prioritization</h1>
+
+        <p class="lead">The platform is working, findings are coming in, and the dashboard shows coverage. Yet somehow, the program feels like it's going nowhere.</p>
+
+        <p>Security teams running mature EASM programs describe the same experience. The same categories of exposure show up week after week, remediation moves slowly or not at all, and the backlog keeps growing faster than the team can work it.</p>
+
+        <p>What's missing is a reliable method for deciding which findings require immediate action, which ones can wait, and which ones are technically present but operationally irrelevant given your actual environment and controls. Without that method, the team defaults to working whatever is loudest or most recent, which is not the same as working whatever is most likely to be exploited.</p>
+
+        <p>The four patterns below are the most common reasons prioritization breaks down in practice.</p>
+
+        <h2>The platform is scoring on severity, not exploitability</h2>
+
+        <p>CVSS scores measure how bad a vulnerability could be under worst-case conditions if fully exploited. They do not measure how likely exploitation is, or whether anyone is actively attempting an exploit. A 9.8 CVSS score on a finding that has never been weaponized in the wild carries a sub-1% exploitation probability in EPSS and does not appear in CISA's Known Exploited Vulnerabilities catalog — it is a low operational priority, regardless of what the severity score says. A 6.5 CVSS finding on an internet-facing authentication endpoint that is actively listed in the KEV catalog is a P1, regardless of its score.</p>
+
+        <div class="callout">
+          <span class="callout-label">Practical test</span>
+          <p>Pull your ten highest-severity open findings and check each one against the KEV catalog and its current EPSS score. If your highest-priority items are not on the KEV list and carry low exploitation probability, your priority queue is sorted by theoretical worst-case severity rather than real-world threat activity. That is why the list feels unworkable — the items at the top are not the items most likely to be exploited next.</p>
+          <p style="margin-top:10px;">Most EASM platforms allow you to incorporate KEV and EPSS data into scoring. If yours does, that configuration change is the highest-leverage adjustment you can make to the program without changing tools.</p>
+        </div>
+
+        <h2>Asset criticality hasn't been defined operationally</h2>
+
+        <p>Prioritization requires knowing which assets matter to the business. Most organizations have done this exercise for compliance purposes, labeling systems production, staging, or development, but that labeling doesn't reflect operational risk. A development server is low-criticality on paper, but if it runs with an over-privileged cloud service account that has write access to a production data store, it is high-criticality by proxy. The EASM platform surfaces the finding on the dev server as low priority, but the actual risk is not low.</p>
+
+        <p>The failure is treating criticality as a flat attribute of an asset rather than a function of its relationships. An asset's actual criticality depends on what it connects to, what credentials it holds, and what blast radius a compromise would carry. This is what CAASM — internal asset management that maps relationships across cloud accounts, identity providers, and infrastructure — is supposed to provide. Without that relationship context, criticality labels are guesses, and prioritization built on them will consistently misrank findings.</p>
+
+        <div class="callout">
+          <span class="callout-label">Practical test</span>
+          <p>Take your lowest-severity open findings and ask whether any of them involve assets that hold privileged credentials, connect to production systems, or sit in paths that lead to crown-jewel infrastructure. If yes, your criticality model is incomplete.</p>
+        </div>
+
+        <h2>Reachability is assumed, not confirmed</h2>
+
+        <p>A finding flagged as internet-facing means the platform observed something on the public internet that it attributed to your organization. It does not mean an attacker can actually reach and exploit it. The asset may sit behind a WAF that is actively dropping malicious traffic. It may be geo-fenced in a way that blocks the threat actors most likely to target it. The open port may be present but the underlying service may not be responding in an exploitable way.</p>
+
+        <p>When a security team spends engineering time remediating an exposure that an upstream control was already blocking, that is wasted capacity — and more importantly, it erodes the team's trust in the platform's output. After enough false urgency, teams start discounting findings systematically, which is how real exposures get missed.</p>
+
+        <p>This is the distinction between passive enumeration and active validation. Passive scanners report what exists. Active validation confirms whether an asset is actually reachable and whether the underlying service responds in a way that indicates exploitability. The latter requires sending test payloads — non-intrusive but actual traffic — to confirm packet delivery and service response. Platforms that offer active validation, or programs that supplement EASM with adversarial exposure validation tooling, can filter findings by confirmed reachability rather than assumed exposure. That filter alone can reduce the actionable finding volume substantially.</p>
+
+        <div class="callout">
+          <span class="callout-label">Practical test</span>
+          <p>Identify the five findings your team most recently closed as remediated. For each one, confirm whether the exposure was validated as reachable before work began or whether it was remediated based on passive enumeration alone. If the latter, check whether upstream controls were already handling it. The results will tell you how much engineering capacity is going toward confirmed exposures versus assumed ones.</p>
+        </div>
+
+        <h2>The finding has no owner</h2>
+
+        <p>A well-prioritized, confirmed-reachable finding still stalls if nobody knows who is responsible for the asset. An EASM platform that flags a rogue AWS instance but cannot map it back to a specific team, cloud account tag, or business unit has produced a finding that will sit in a generic infrastructure queue indefinitely.</p>
+
+        <p>This is the attribution-to-mobilization gap. Discovery produces a finding. Mobilization requires a specific person or team to receive it, accept ownership, and act on it within a defined timeframe. Everything in between — determining who owns the asset, getting the finding to them in a format they can act on, and confirming the fix — is organizational infrastructure that the EASM platform does not provide and that most programs have not built.</p>
+
+        <div class="callout">
+          <span class="callout-label">Practical test</span>
+          <p>Take your ten oldest open findings and identify why each one hasn't been closed. If the common answer is "unclear ownership" or "waiting to hear back from the infrastructure team," the bottleneck is mobilization, not discovery or prioritization. Building explicit ownership mapping — connecting discovered assets to cloud account owners, CMDB records, or team tagging conventions — is the fix, and it typically requires integrating EASM output with internal asset management data rather than treating the EASM platform as the system of record for both.</p>
+        </div>
+
+        <h2>The pattern underneath all four</h2>
+
+        <p>These failure modes compound. A program that is scoring on severity rather than exploitability will over-prioritize low-probability findings. A program with undefined asset criticality will misrank everything else. A program that doesn't validate reachability will burn engineering time on exposures that compensating controls are already handling. A program with no ownership mapping will stall confirmed, high-priority findings in routing limbo.</p>
+
+        <p>Most stalled programs have all four problems simultaneously, which is why they feel intractable. The entry point is usually the scoring model — switching from CVSS-only to KEV/EPSS-weighted scoring produces an immediately different priority queue that reflects actual threat activity. That change is fast and visible, and it creates the organizational credibility to then work on the harder problems of criticality mapping and ownership attribution.</p>
+
+        <div class="newsletter-block">
+          <span class="page-label">Stay current</span>
+          <p>Vendor changes, category shifts, and new evaluation resources — delivered when it matters.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="your@email.com" aria-label="Email address">
+            <button type="button">Subscribe</button>
+          </div>
+        </div>
+
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/newsletter.js"></script>
+</body>
+</html>

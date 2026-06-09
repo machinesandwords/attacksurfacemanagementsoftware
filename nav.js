@@ -27,7 +27,7 @@
     <div class="nav-section">
       <div class="nav-section-label">Tools</div>
       <a href="/tools/" class="nav-item depth-0">All tools</a>
-      <a href="/tools/roi-calculator/" class="nav-item depth-1">└ IIoT ROI calculator</a>
+      <a href="/tools/tool-evaluation-checklist/" class="nav-item depth-1">└ Tool evaluation checklist</a>
       <a href="/tools/evaluation-checklist/" class="nav-item depth-1">└ Platform evaluation checklist</a>
       <a href="/tools/" class="nav-item depth-1">└ more</a>
         </div>
@@ -37,8 +37,8 @@
     <div class="nav-section">
       <div class="nav-section-label">Comparisons</div>
       <a href="/comparisons/" class="nav-item depth-0">All comparisons</a>
-      <a href="/comparisons/kepware-vs-litmus/" class="nav-item depth-1">├ Kepware vs Litmus</a>
-      <a href="/comparisons/aws-greengrass-vs-azure-edge/" class="nav-item depth-1">├ AWS IoT vs Azure IoT</a>
+      <a href="/comparisons/tenable-vs-qualys/" class="nav-item depth-1">├ Tenable vs Qualys</a>
+      <a href="/comparisons/ionix-vs-cycognito/" class="nav-item depth-1">├ Ionix vs Cycognito</a>
       <a href="/comparisons/index.html" class="nav-item depth-1">└ more</a>
       </div>
 

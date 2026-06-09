@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>ASM Platform Comparisons | Attack Surface Management Software</title>
+  <meta name="description" content="Independent head-to-head comparisons of attack surface management platforms. Tenable vs. Qualys, Censys vs. Cortex Xpanse, IONIX vs. CyCognito, and more. No vendor affiliation.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/comparisons/">
+
+  <meta property="og:title" content="ASM Platform Comparisons | Attack Surface Management Software">
+  <meta property="og:description" content="Independent head-to-head comparisons of attack surface management platforms. No vendor affiliation.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/comparisons/">
+  <meta property="og:type" content="website">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Comparisons", "item": "https://attacksurfacemanagementsoftware.com/comparisons/" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "ASM Platform Comparisons",
+    "description": "Independent head-to-head comparisons of attack surface management platforms.",
+    "url": "https://attacksurfacemanagementsoftware.com/comparisons/",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "url": "https://attacksurfacemanagementsoftware.com/comparisons/tenable-vs-qualys/", "name": "Tenable vs. Qualys" },
+      { "@type": "ListItem", "position": 2, "url": "https://attacksurfacemanagementsoftware.com/comparisons/censys-vs-cortex-xpanse/", "name": "Censys vs. Cortex Xpanse" },
+      { "@type": "ListItem", "position": 3, "url": "https://attacksurfacemanagementsoftware.com/comparisons/ionix-vs-cycognito/", "name": "IONIX vs. CyCognito" },
+      { "@type": "ListItem", "position": 4, "url": "https://attacksurfacemanagementsoftware.com/comparisons/bitsight-vs-tenable/", "name": "Bitsight vs. Tenable" },
+      { "@type": "ListItem", "position": 5, "url": "https://attacksurfacemanagementsoftware.com/comparisons/crowdstrike-vs-microsoft-easm/", "name": "CrowdStrike Falcon Surface vs. Microsoft Defender EASM" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+
+  <style>
+    .comparison-list { list-style: none; padding: 0; margin-bottom: 32px; }
+    .comparison-list li { border-bottom: var(--hairline); }
+    .comparison-list li:last-child { border-bottom: none; }
+    .comparison-list a {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 0;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+    .comparison-list a:hover .comparison-list-name { color: var(--accent); }
+    .comparison-list-body { flex: 1; }
+    .comparison-list-name { font-size: var(--small); font-weight: 700; margin-bottom: 2px; }
+    .comparison-list-desc { font-size: 12px; color: var(--mid); line-height: 1.5; }
+    .comparison-list-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 4px;
+      display: block;
+    }
+    .comparison-list-arrow { color: var(--border); font-size: 11px; padding-top: 2px; flex-shrink: 0; }
+    .comparison-list a:hover .comparison-list-arrow { color: var(--accent); }
+    .section-head {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+      padding: 16px 0 8px;
+      border-bottom: 1px solid var(--charcoal);
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-head::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 12px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <article class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Comparisons</span>
+        </nav>
+
+        <span class="page-label">Head-to-Head Comparisons</span>
+        <h1>ASM Platform Comparisons</h1>
+
+        <p class="lead">Independent head-to-head comparisons of attack surface management platforms. Each comparison covers the architectural difference between two platforms, where each wins, and a direct verdict on which belongs in which environment. No vendor affiliation.</p>
+
+        <div class="section-intro">
+          <p>Use the <a href="/tools/vendor-comparison/">vendor comparison tool</a> to filter the full market before shortlisting. Use these comparisons once you have a shortlist and need to understand the specific trade-offs between two platforms. The <a href="/landscape/vendors/">vendor index</a> covers every significant platform organized by architectural cluster.</p>
+        </div>
+
+        <!-- Vulnerability ecosystem -->
+        <div class="section-head" style="margin-top:32px;">Vulnerability ecosystem leaders</div>
+        <ul class="comparison-list">
+          <li>
+            <a href="/comparisons/tenable-vs-qualys/">
+              <div class="comparison-list-body">
+                <span class="comparison-list-tag">Vuln ecosystem — head-to-head</span>
+                <div class="comparison-list-name">Tenable vs. Qualys</div>
+                <div class="comparison-list-desc">Two Gartner MQ Leaders with different architectural commitments to CTEM. The comparison that matters for organizations already running enterprise vulnerability management and evaluating which platform to extend into external discovery.</div>
+              </div>
+              <span class="comparison-list-arrow">&rsaquo;</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Pure-play specialists -->
+        <div class="section-head">Pure-play and internet-scale specialists</div>
+        <ul class="comparison-list">
+          <li>
+            <a href="/comparisons/censys-vs-palo-alto/">
+              <div class="comparison-list-body">
+                <span class="comparison-list-tag">Pure-play vs. platform consolidator</span>
+                <div class="comparison-list-name">Censys vs. Cortex Xpanse</div>
+                <div class="comparison-list-desc">Internet-scale discovery data platform vs. operationalized EASM within a security ecosystem. Covers the question buyers rarely ask explicitly: do you need a data platform or a managed workflow?</div>
+              </div>
+              <span class="comparison-list-arrow">&rsaquo;</span>
+            </a>
+          </li>
+          <li>
+            <a href="/comparisons/ionix-vs-cycognito/">
+              <div class="comparison-list-body">
+                <span class="comparison-list-tag">Pure-play specialists — head-to-head</span>
+                <div class="comparison-list-name">IONIX vs. CyCognito</div>
+                <div class="comparison-list-desc">Organizational entity mapping vs. active exposure validation. Both use seedless discovery. The difference is architectural — which one fits depends on whether your hard problem is knowing what you own or knowing what is actually exposed.</div>
+              </div>
+              <span class="comparison-list-arrow">&rsaquo;</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Risk rating vs. operational -->
+        <div class="section-head">Risk rating vs. operational EASM</div>
+        <ul class="comparison-list">
+          <li>
+            <a href="/comparisons/bitsight-vs-tenable/">
+              <div class="comparison-list-body">
+                <span class="comparison-list-tag">Risk rating vs. operational EASM</span>
+                <div class="comparison-list-name">Bitsight vs. Tenable</div>
+                <div class="comparison-list-desc">The comparison that should not exist as a direct evaluation — but frequently does. Covers why these platforms answer different questions, who the right buyer is for each, and what happens when you buy the wrong one for the wrong audience.</div>
+              </div>
+              <span class="comparison-list-arrow">&rsaquo;</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Platform consolidators -->
+        <div class="section-head">Platform consolidators</div>
+        <ul class="comparison-list">
+          <li>
+            <a href="/comparisons/crowdstrike-vs-microsoft/">
+              <div class="comparison-list-body">
+                <span class="comparison-list-tag">Platform consolidators — head-to-head</span>
+                <div class="comparison-list-name">CrowdStrike Falcon Surface vs. Microsoft Defender EASM</div>
+                <div class="comparison-list-desc">Two ecosystem bets, not two EASM products. The comparison that matters for organizations already committed to one of these security stacks and asking whether the native EASM module closes the external visibility gap.</div>
+              </div>
+              <span class="comparison-list-arrow">&rsaquo;</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="newsletter-block">
+          <span class="page-label">Stay current</span>
+          <p>Vendor changes, category shifts, and new evaluation resources — delivered when it matters.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="your@email.com" aria-label="Email address">
+            <button type="button">Subscribe</button>
+          </div>
+        </div>
+
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/newsletter.js"></script>
+</body>
+</html>

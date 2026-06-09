@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>CTEM Stage Five: Mobilization Without a SOAR | Attack Surface Management Software</title>
+  <meta name="description" content="Most CTEM guides assume you have a SOAR. Most security teams don't. Here is what operational mobilization looks like when your stack is a ticketing system and a weekly meeting.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/guides/ctem-mobilization-without-soar/">
+
+  <meta property="og:title" content="CTEM Stage Five: Mobilization Without a SOAR | Attack Surface Management Software">
+  <meta property="og:description" content="Most CTEM guides assume you have a SOAR. Most security teams don't. Here is what operational mobilization looks like when your stack is a ticketing system and a weekly meeting.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/guides/ctem-mobilization-without-soar/">
+  <meta property="og:type" content="article">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "CTEM Stage Five: Mobilization Without a SOAR",
+    "description": "Most CTEM guides assume you have a SOAR. Most security teams don't. Here is what operational mobilization looks like when your stack is a ticketing system and a weekly meeting.",
+    "url": "https://attacksurfacemanagementsoftware.com/guides/ctem-mobilization-without-soar/",
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "publisher": { "@type": "Organization", "name": "Attack Surface Management Software", "url": "https://attacksurfacemanagementsoftware.com" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://attacksurfacemanagementsoftware.com/guides/" },
+      { "@type": "ListItem", "position": 3, "name": "CTEM Stage Five: Mobilization Without a SOAR", "item": "https://attacksurfacemanagementsoftware.com/guides/ctem-mobilization-without-soar/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <article class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/guides/">Guides</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>CTEM stage five: mobilization without a SOAR</span>
+        </nav>
+
+        <span class="page-label">Guide</span>
+        <h1>CTEM stage five: mobilization without a SOAR</h1>
+
+        <p class="lead">Most CTEM guides assume you have a SOAR platform, bidirectional ITSM integration, and a dedicated staff to manage the remediation pipeline. Most security teams don't.</p>
+
+        <p>Most writing about CTEM mobilization assumes a mature security operations environment: a SOAR platform running automated playbooks, bidirectional ITSM integration, and a dedicated staff to manage the remediation pipeline. If your organization has all that, mobilization is an engineering problem. If it doesn't, mobilization is a process problem that no amount of tooling will solve until you've made some decisions that have nothing to do with technology.</p>
+
+        <p>The majority of security teams sit in the second category. They have a ticketing system, a spreadsheet that someone updates irregularly, and a standing meeting with the infrastructure team that gets canceled when something more urgent comes up. CTEM guides that treat SOAR as a baseline assumption are not written for them.</p>
+
+        <p>This is written for them.</p>
+
+        <h2>Why mobilization fails at human speed</h2>
+
+        <p>When confirmed findings have to be manually triaged, manually routed, manually tracked, and manually verified, the throughput ceiling is the size of the security team. That ceiling is almost always lower than the finding volume from a continuously running EASM platform, which means findings age.</p>
+
+        <p>When findings age, the infrastructure teams that should be acting on them stop taking them seriously. When those teams stop taking them seriously, the security team stops pushing them hard. The program produces dashboards instead of closures.</p>
+
+        <p>This is not an attention or accountability failure. It is a structural one. Manual mobilization does not scale to continuous discovery output. The challenge is how to reduce the per-finding overhead enough that the team's capacity matches the volume.</p>
+
+        <h2>What mobilization really requires</h2>
+
+        <p>Strip away the tooling assumptions and mobilization has four components, none of which require a SOAR.</p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border:var(--hairline); margin:24px 0;">
+          <div style="background:var(--surface); padding:20px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">01</div>
+            <div style="font-size:13px; font-weight:700; color:var(--charcoal); margin-bottom:8px;">An owner</div>
+            <div style="font-size:12px; color:var(--mid); line-height:1.6;">Every finding needs a specific person or team responsible for it. Not "the infrastructure team" — a named queue, a specific cloud account owner, a team identified by their asset tagging convention. If the finding arrives without an owner, it will wait until someone figures out who should receive it, which is usually never.</div>
+          </div>
+          <div style="background:var(--surface); padding:20px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">02</div>
+            <div style="font-size:13px; font-weight:700; color:var(--charcoal); margin-bottom:8px;">A format the owner can act on</div>
+            <div style="font-size:12px; color:var(--mid); line-height:1.6;">A finding that lands as a raw EASM alert — external IP, port, CVE identifier, severity score — requires translation before the recipient can act on it. That translation step is where findings die. The ticket should already contain asset context, business justification, and a clear description of what needs to be done. The security team does that work, not the infrastructure team.</div>
+          </div>
+          <div style="background:var(--surface); padding:20px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">03</div>
+            <div style="font-size:13px; font-weight:700; color:var(--charcoal); margin-bottom:8px;">A deadline</div>
+            <div style="font-size:12px; color:var(--mid); line-height:1.6;">Without a defined SLA, findings have no urgency signal. A finding with no deadline competes on goodwill against everything else in the queue, which means it loses. Three tiers is enough: critical findings with confirmed reachability on high-criticality assets get a 48-hour SLA; everything else gets tiered based on severity and asset criticality. The specific numbers matter less than having numbers at all.</div>
+          </div>
+          <div style="background:var(--surface); padding:20px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">04</div>
+            <div style="font-size:13px; font-weight:700; color:var(--charcoal); margin-bottom:8px;">A verification step</div>
+            <div style="font-size:12px; color:var(--mid); line-height:1.6;">Closing a ticket is not the same as closing an exposure. The remediation loop is not complete until someone confirms that the fix reduced the external exposure. Most EASM platforms will show whether a finding disappears from the next discovery run. "Verified closed" must be a different ticket status than "patched," and the security team owns that step.</div>
+          </div>
+        </div>
+
+        <h2>The minimum viable mobilization stack</h2>
+
+        <p>For teams without SOAR, this is what operational mobilization looks like in practice.</p>
+
+        <p>Asset ownership mapping lives somewhere the EASM platform can reference. That might be CMDB tags, cloud account ownership records, or a spreadsheet that the security team maintains and updates. It does not need to be sophisticated. It needs to exist and be current enough that a discovered asset can be matched to an owner without a manual investigation.</p>
+
+        <p>The EASM platform creates tickets directly in the ticketing system with pre-populated context: asset details, finding description, severity, confirmed reachability status, owning team, and SLA deadline. Most enterprise EASM platforms have ServiceNow and Jira integrations that can do this without custom development. The configuration work is in the ticket template — making sure the ticket that arrives in the infrastructure queue contains everything the recipient needs to act without coming back to the security team with questions.</p>
+
+        <p>SLA tracking runs in the ticketing system, not in a separate spreadsheet. The security team reviews overdue tickets on a defined cadence (weekly is usually enough) and escalates through a defined path when SLAs are missed. That path needs to exist before the first SLA is missed, not after.</p>
+
+        <p>Verification is a ticket workflow state. When an infrastructure team closes a finding as remediated, it moves to a "pending verification" state. The security team confirms closure on the next discovery run and moves it to verified closed. Findings that don't verify get reopened. This loop takes two minutes per finding and eliminates the gap between "we patched it" and "the exposure is gone."</p>
+
+        <h2>Where to invest if you're building toward automation</h2>
+
+        <p>The first integration worth building is EASM-to-ticketing, not EASM-to-SOAR. Get findings into the right queue with the right context and the right owner before you automate the response. A SOAR sitting on top of a broken manual process automates the broken process.</p>
+
+        <p>The second investment is asset ownership mapping. Not because it is exciting, but because every other part of the mobilization workflow depends on it. A finding without an owner is noise. An ownership map that is six months out of date is almost as bad. The maintenance overhead of keeping ownership data current is the actual cost of mobilization, and it is invisible until the first time a critical finding sits unrouted for two weeks because nobody knows which team owns the AWS account it lives in.</p>
+
+        <p>When those two pieces are working — findings routing to the right owner with the right context, and closure being verified rather than assumed — you have a mobilization program. It is not elegant. It does not require a SOAR. It produces closures, which is the only metric that matters.</p>
+
+        <div class="newsletter-block">
+          <span class="page-label">Stay current</span>
+          <p>Vendor changes, category shifts, and new evaluation resources — delivered when it matters.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="your@email.com" aria-label="Email address">
+            <button type="button">Subscribe</button>
+          </div>
+        </div>
+
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/newsletter.js"></script>
+</body>
+</html>

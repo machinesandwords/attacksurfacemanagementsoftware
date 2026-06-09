@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>Seedless Discovery Is a Spectrum | Attack Surface Management Software</title>
+  <meta name="description" content="Every EASM vendor claims seedless discovery. The underlying question is how the platform resolves organizational attribution — and the gaps in that technique determine what gets missed.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/guides/seedless-discovery/">
+
+  <meta property="og:title" content="Seedless Discovery Is a Spectrum | Attack Surface Management Software">
+  <meta property="og:description" content="Every EASM vendor claims seedless discovery. The underlying question is how the platform resolves organizational attribution — and the gaps in that technique determine what gets missed.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/guides/seedless-discovery/">
+  <meta property="og:type" content="article">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Seedless Discovery Is a Spectrum",
+    "description": "Every EASM vendor claims seedless discovery. The underlying question is how the platform resolves organizational attribution — and the gaps in that technique determine what gets missed.",
+    "url": "https://attacksurfacemanagementsoftware.com/guides/seedless-discovery/",
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "publisher": { "@type": "Organization", "name": "Attack Surface Management Software", "url": "https://attacksurfacemanagementsoftware.com" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://attacksurfacemanagementsoftware.com/guides/" },
+      { "@type": "ListItem", "position": 3, "name": "Seedless Discovery Is a Spectrum", "item": "https://attacksurfacemanagementsoftware.com/guides/seedless-discovery/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <article class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/guides/">Guides</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Seedless discovery is a spectrum</span>
+        </nav>
+
+        <span class="page-label">Guide</span>
+        <h1>Seedless discovery is a spectrum</h1>
+
+        <p class="lead">Every EASM vendor's website uses the phrase. The claim is that the platform can start from a company name or a root domain and autonomously map all associated external infrastructure — no asset list required, no IP ranges to declare, no pre-populated inventory to work from.</p>
+
+        <p>That can be true, but it is not uniform across platforms. Seedless discovery is a spectrum. The underlying question is how a platform resolves organizational attribution, deciding that a discovered asset belongs to your organization and not someone else's. The techniques used for that attribution vary significantly, and the gaps in those techniques determine what gets missed.</p>
+
+        <h2>The subsidiary problem</h2>
+
+        <p>Most EASM platforms begin discovery from a root domain and expand outward using DNS relationships, certificate data, IP range ownership, and autonomous system number analysis. That approach works well for directly-owned infrastructure that shares clear technical relationships with the parent domain. It works poorly for subsidiaries that operate as independent brands.</p>
+
+        <p>A holding company with twelve operating subsidiaries under twelve different brand names, twelve different domains, and twelve different hosting arrangements will see its subsidiary infrastructure in discovery only if the platform's entity model explicitly connects those subsidiaries to the parent organization. The technical signals — DNS, certificates, IP ownership — may not establish that connection if the subsidiary's infrastructure was built independently before the acquisition and has not been integrated with the parent's technical footprint.</p>
+
+        <p>Platforms that build organizational entity models — mapping corporate relationships from public registry data, ownership filings, and known acquisition records — find subsidiary infrastructure that pure-technical-signal discovery misses. Platforms that rely on technical signals alone find what is technically connected, which is not the same as what is organizationally owned.</p>
+
+        <h2>The acquisition lag</h2>
+
+        <p>When a company acquires another, the acquired infrastructure does not automatically appear in the acquirer's discovery scope. Platforms that derive their organizational entity models from public corporate registry data — incorporation records, domain registration history, public filings — lag actual transactions by weeks or months. The time between acquisition close and when the acquirer's EASM platform begins covering the acquired company's external infrastructure is a real exposure window.</p>
+
+        <p>Acquired infrastructure carries the security posture of the previous owner, which may be significantly weaker than the acquirer's baseline. It may include internet-facing assets that were never inventoried, such as certificates that are expiring, cloud instances that were misconfigured under the previous IT regime, and domains that were abandoned rather than decommissioned. The acquirer's security team inherits all of it at close. Their EASM platform may not see any of it for months.</p>
+
+        <h2>The seeded-in-disguise problem</h2>
+
+        <p>Some platforms that market seedless discovery are effectively seeded once onboarding is complete. The initial run maps a reasonable external footprint from the provided domain or company name. The platform then monitors from that established baseline — tracking changes to known assets, alerting on new findings within the discovered scope. Assets that were not in the initial baseline may not be discovered unless something triggers a rescan of the broader organizational scope.</p>
+
+        <p>A subdomain spun up by a development team six months after onboarding. Infrastructure from a division that was not active at the time of the initial discovery run. A cloud environment provisioned under a subsidiary domain that the initial scan didn't reach. Whether these are found depends on how the platform handles ongoing scope expansion — whether it periodically reruns full organizational discovery or whether it monitors from the established baseline.</p>
+
+        <p>The platform's marketing describes the initial run as seedless. The buyer's experience after twelve months of monitoring may be something closer to seeded, because the effective scope is the baseline established at onboarding plus whatever the monitoring sweep happens to catch. These are not the same thing.</p>
+
+        <h2>The test to run before you commit</h2>
+
+        <p>The practical way to evaluate a seedless discovery claim is to make the platform demonstrate it under controlled conditions before you sign. Provide the platform with your parent company name only — no domain list, no IP ranges, no subsidiary names, no organizational chart. Ask it to show you what it finds. Then compare that output against your known infrastructure across all subsidiaries and recently acquired entities.</p>
+
+        <p>The gap between what the platform found and what you know exists is the measure of how seedless the discovery actually is. A platform that finds 60% of your known footprint from a company name alone is performing differently than one that finds 90%, and that difference matters for how you structure the program and whether you need to supplement the platform's discovery with manual scope management.</p>
+
+        <div class="callout">
+          <span class="callout-label">Questions to ask in the evaluation</span>
+          <p>How does the platform handle subsidiaries operating under different brand names? What is the typical lag between an acquisition close and the acquired infrastructure appearing in scope? How does the platform handle assets that were not present during the initial discovery run?</p>
+          <p style="margin-top:10px;">The answers will be more informative than the marketing language.</p>
+        </div>
+
+        <div class="newsletter-block">
+          <span class="page-label">Stay current</span>
+          <p>Vendor changes, category shifts, and new evaluation resources — delivered when it matters.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="your@email.com" aria-label="Email address">
+            <button type="button">Subscribe</button>
+          </div>
+        </div>
+
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/newsletter.js"></script>
+</body>
+</html>

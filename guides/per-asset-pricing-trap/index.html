@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+
+  <title>The Per-Asset Pricing Trap | Attack Surface Management Software</title>
+  <meta name="description" content="Usage-based EASM pricing creates a specific cost trap: the platform's job is to find assets you didn't know you had, and every asset it finds adds to your bill. What to do before you sign.">
+  <link rel="canonical" href="https://attacksurfacemanagementsoftware.com/guides/per-asset-pricing-trap/">
+
+  <meta property="og:title" content="The Per-Asset Pricing Trap | Attack Surface Management Software">
+  <meta property="og:description" content="Usage-based EASM pricing creates a specific cost trap: the platform's job is to find assets you didn't know you had, and every asset it finds adds to your bill.">
+  <meta property="og:url" content="https://attacksurfacemanagementsoftware.com/guides/per-asset-pricing-trap/">
+  <meta property="og:type" content="article">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "The Per-Asset Pricing Trap",
+    "description": "Usage-based EASM pricing creates a specific cost trap: the platform's job is to find assets you didn't know you had, and every asset it finds adds to your bill.",
+    "url": "https://attacksurfacemanagementsoftware.com/guides/per-asset-pricing-trap/",
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "publisher": { "@type": "Organization", "name": "Attack Surface Management Software", "url": "https://attacksurfacemanagementsoftware.com" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://attacksurfacemanagementsoftware.com" },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://attacksurfacemanagementsoftware.com/guides/" },
+      { "@type": "ListItem", "position": 3, "name": "The Per-Asset Pricing Trap", "item": "https://attacksurfacemanagementsoftware.com/guides/per-asset-pricing-trap/" }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js" defer></script>
+  <script src="/nav.js" defer></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="topbar-brand">Attack Surface Management <span>Software</span></a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-tagline">Independent guidance for enterprise security software buyers</span>
+    <div class="topbar-right"><a href="/subscribe/">Subscribe &rarr;</a></div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <main class="main">
+      <article class="content">
+
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="/guides/">Guides</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>The per-asset pricing trap</span>
+        </nav>
+
+        <span class="page-label">Guide</span>
+        <h1>The per-asset pricing trap</h1>
+
+        <p class="lead">The platform's job is to find assets you didn't know you had. Every asset it finds adds to your bill.</p>
+
+        <p>Enterprise security teams have been caught by usage-based pricing models before, like when cloud compute bills balloon because a workload scales unexpectedly or SIEM costs explode when log volume triples after a new data source is added. The per-asset daily pricing model used by some EASM platforms creates the same dynamic, with one specific twist that makes it harder to anticipate: the platform's job is to find assets you didn't know you had, and every asset it finds adds to your bill.</p>
+
+        <p>The mechanism is straightforward. You model your contract costs against your known asset inventory: the servers, cloud instances, and domains your team has documented. The platform then does what it was designed to do: seedless discovery maps infrastructure you didn't declare, including forgotten subdomains, shadow IT deployed by development teams outside the security perimeter, infrastructure inherited from acquisitions that was never fully inventoried, and cloud instances spun up and abandoned without deregistration. Each of those discovered assets is metered. Your bill reflects the actual size of your attack surface, not the size of the attack surface you thought you had when you signed.</p>
+
+        <p>For organizations with stable, well-understood infrastructure, this is not a problem. If your asset footprint is predictable and your IT governance is tight, per-asset daily pricing can be cheaper than flat platform licensing. The volatility problem is specific to environments where those conditions don't hold: active DevOps teams spinning up cloud infrastructure continuously, significant M&A activity that keeps absorbing new infrastructure, or a history of decentralized IT that has left shadow assets distributed across the environment. These are also exactly the environments where EASM delivers the most value, which is the structural irony — the organizations that most need continuous external discovery are the ones whose costs under a usage-based model are hardest to predict.</p>
+
+        <h2>What gets missed in the contract negotiation</h2>
+
+        <p>The asset count used in initial contract pricing almost always comes from the buyer's internal records: their CMDB, their cloud asset register, their DNS inventory. These records are the system of record for assets the organization knows about. They are not a reliable input for pricing a platform whose primary value is finding the assets the organization doesn't know about.</p>
+
+        <p>A security team that signs a per-asset daily contract based on a known inventory of 5,000 assets and then discovers their actual external footprint is 12,000 assets — including forgotten infrastructure from a three-year-old acquisition and a collection of development subdomains that were never decommissioned — has a budget problem that begins the moment the platform works correctly. The discovery run that justified the purchase is also the event that invalidates the cost model.</p>
+
+        <p>This is not a vendor transparency failure. The pricing structure is disclosed. The issue is that buyers are pricing contracts against the wrong input because the right input — the actual size of their external attack surface — is not known until after the platform runs.</p>
+
+        <h2>The pre-purchase test</h2>
+
+        <p>The specific mitigation is to get an asset count estimate before signing that reflects what the platform will actually discover, not what your internal records show. Most EASM vendors will run a scoped proof-of-concept or discovery sample before contract execution. The output of that exercise is the right input for cost modeling.</p>
+
+        <div class="callout">
+          <span class="callout-label">Questions to ask before signing any per-asset metered contract</span>
+          <p><ul>What is the asset count from a seedless discovery run against our environment, not from our declared asset list?</ul> <ul>How does that count change when subsidiary domains and recently acquired infrastructure are included?</ul> <ul>What is the daily rate at that count, and what does a 50% increase in discovered assets do to the monthly bill?</ul> <ul>Is there a cap on metered assets, or does cost scale linearly with discovery?</ul></p>
+          <p style="margin-top:10px;">If the vendor is unwilling to run a discovery sample before contract execution, that unwillingness is itself information about how the conversation will go when the bill arrives higher than expected.</p>
+        </div>
+
+        <h2>The broader principle</h2>
+
+        <p>Microsoft Defender EASM is the most prominent platform using per-asset daily pricing at enterprise scale, which is why it appears most frequently in this conversation. But the dynamic applies to any EASM contract where costs are tied to discovered asset count rather than a flat platform fee. As the market moves toward continuous discovery and away from point-in-time scanning, more vendors are experimenting with usage-based pricing models. The principle is the same regardless of which platform is on the table: price the contract against what the platform will find, not against what you already know.</p>
+
+        <p>The organizations most exposed to this dynamic are the ones with the most to gain from the platform. That is the trap.</p>
+
+        <div class="newsletter-block">
+          <span class="page-label">Stay current</span>
+          <p>Vendor changes, category shifts, and new evaluation resources — delivered when it matters.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="your@email.com" aria-label="Email address">
+            <button type="button">Subscribe</button>
+          </div>
+        </div>
+
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Attack Surface Management Software is an independent publication. No sponsored content. No affiliate arrangements. Vendor coverage is editorially determined.</p>
+      <p>&copy; 2026 Machines &amp; Words. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/newsletter.js"></script>
+</body>
+</html>
