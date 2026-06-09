@@ -174,6 +174,12 @@
 
         <p style="font-size:var(--small); color:var(--mid); margin-bottom:32px;">Score each criterion based on your current program — not what the platform can do, but what your team is actually doing today. <strong style="color:var(--charcoal);">0 = not in place</strong> &nbsp;·&nbsp; <strong style="color:#b45309;">1 = partially in place</strong> &nbsp;·&nbsp; <strong style="color:var(--accent);">2 = fully operational</strong></p>
 
+        <!-- Stage blocks -->
+        <div id="assessment-container"></div>
+
+        <!-- Stage summary -->
+        <div class="stage-summary" id="stage-summary" style="margin-top:32px;"></div>
+
         <!-- Overall score bar -->
         <div class="overall-bar">
           <div class="overall-cell">
@@ -182,15 +188,9 @@
             <span class="overall-label" id="overall-label">Program maturity</span>
           </div>
           <div class="overall-cell" style="flex-direction:column; align-items:flex-start; gap:4px;">
-            <div id="overall-focus" style="font-size:11px; color:var(--faint); line-height:1.5;">Score your program below to see your maturity level.</div>
+            <div id="overall-focus" style="font-size:11px; color:var(--faint); line-height:1.5;">Complete the assessment above to see your maturity level.</div>
           </div>
         </div>
-
-        <!-- Stage summary -->
-        <div class="stage-summary" id="stage-summary"></div>
-
-        <!-- Stage blocks -->
-        <div id="assessment-container"></div>
 
         <!-- Focus recommendation -->
         <div class="focus-block" id="focus-block" style="display:none;">
