@@ -17,7 +17,7 @@
       <div class="nav-section-label">Landscape</div>
       <a href="/landscape/" class="nav-item depth-0">Market overview</a>
       <a href="/landscape/vendors/" class="nav-item depth-1">├ Vendor index</a>
-      <a href="/tools/vendor-comparison/" class="nav-item depth-1">├ Vendor comparison</a>
+      <a href="/landscape/vendor-comparison/" class="nav-item depth-1">├ Vendor comparison</a>
       <a href="/landscape/market-direction/" class="nav-item depth-1">├ Market direction</a>
       <a href="/landscape/protocols/" class="nav-item depth-1">└ Protocol reference</a>
     </div>
