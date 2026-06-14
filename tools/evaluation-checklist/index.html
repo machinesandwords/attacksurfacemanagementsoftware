@@ -107,6 +107,21 @@
     .modal-fine-print { font-size: 11px; color: var(--faint); line-height: 1.6; }
     .modal-fine-print a { color: var(--faint); text-decoration: underline; }
 
+    /* ── Post-subscribe export buttons ── */
+    .modal-export-btns { display: none; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    .modal-export-btns.visible { display: flex; }
+    .modal-export-btns button {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 9px 16px; border: none; cursor: pointer; border-radius: 0;
+      white-space: nowrap;
+    }
+    .btn-print-report { background: var(--accent); color: #fff; }
+    .btn-print-report:hover { background: var(--accent-dim); }
+    .btn-download-html { background: var(--charcoal); color: #fff; }
+    .btn-download-html:hover { background: var(--accent); }
+
     @media (max-width: 640px) {
       .vendor-bar { grid-template-columns: 1fr; }
       .score-bar { grid-template-columns: 1fr; }
@@ -187,10 +202,10 @@
         <!-- Export gate -->
         <div class="gate-bar">
           <div class="gate-bar-copy">
-            <strong>Export your scored report.</strong> Download a PDF of your completed evaluation — ready to share with your team or drop into your evaluation workflow. Requires a premium subscription.
+            <strong>Export your scored report.</strong> Download a copy of your completed evaluation — ready to share with your team or drop into your evaluation workflow. Requires a free subscription.
             <br><a href="/subscribe/" style="font-size:11px; color:var(--accent);">See what's in the paid edition &rarr;</a>
           </div>
-          <button class="btn-export" id="export-btn">Export PDF &rarr;</button>
+          <button class="btn-export" id="export-btn">Export report &rarr;</button>
         </div>
 
       </div>
@@ -204,15 +219,20 @@
         <h2>Export your report</h2>
         <button class="modal-close" id="modal-close">&times;</button>
       </div>
-      <span class="modal-badge">Premium feature</span>
-      <p>Enter your email to receive a free issue of <strong>M&W Security</strong> and unlock PDF export for this tool. Premium subscribers get full export access across the entire network.</p>
-      <p><strong>Your scores are saved.</strong> You won't lose your evaluation.</p>
-      <div class="modal-form">
+      <span class="modal-badge">Free export</span>
+      <p>Enter your email to receive a free issue of <strong>The Independent Defender</strong> and unlock export for this tool.</p>
+      <p id="modal-saved-note"><strong>Your scores are saved.</strong> You won't lose your evaluation.</p>
+      <div class="modal-form" id="modal-form-row">
         <input type="email" id="modal-email" placeholder="your@email.com" autocomplete="email">
         <button id="modal-submit">Get access</button>
       </div>
       <div class="modal-status" id="modal-status"></div>
-      <div class="modal-fine-print">Already a premium subscriber? <a href="/subscribe/">Sign in &rarr;</a><br>By subscribing you agree to receive M&W Security. Unsubscribe anytime.</div>
+      <!-- Post-subscribe export buttons — hidden until subscribe succeeds -->
+      <div class="modal-export-btns" id="modal-export-btns">
+        <button class="btn-print-report" id="btn-print-report">Print / Save PDF</button>
+        <button class="btn-download-html" id="btn-download-html">Download HTML</button>
+      </div>
+      <div class="modal-fine-print" id="modal-fine-print">Already a subscriber? <a href="/subscribe/">Sign in &rarr;</a><br>By subscribing you agree to receive The Independent Defender. Unsubscribe anytime.</div>
     </div>
   </div>
 
@@ -228,7 +248,6 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
 
-  // Ensure text inputs are hidden on load
   document.getElementById('v1-name').style.display = 'none';
   document.getElementById('v2-name').style.display = 'none';
 
@@ -292,18 +311,17 @@
     }
   ];
 
-  // State
+  // ── State ─────────────────────────────────────────────────
   var scores = {};
   var vendorNames = { v1: 'Vendor A', v2: 'Vendor B' };
 
-  // Init scores
   CATEGORIES.forEach(function(cat) {
     cat.items.forEach(function(item) {
       scores[item.id] = { v1: null, v2: null };
     });
   });
 
-  // Save/restore state
+  // ── Persistence ───────────────────────────────────────────
   function saveState() {
     try {
       localStorage.setItem('asm_eval_scores', JSON.stringify(scores));
@@ -336,7 +354,7 @@
     } catch(e) {}
   }
 
-  // Populate vendor dropdowns from vendors.json
+  // ── Vendor dropdown population ────────────────────────────
   fetch('/vendors.json')
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -354,7 +372,7 @@
     })
     .catch(function() {});
 
-  // Vendor name wiring
+  // ── Vendor name wiring ────────────────────────────────────
   function updateVendorLabel(which) {
     var selectEl = document.getElementById(which + '-select');
     var inputEl  = document.getElementById(which + '-name');
@@ -390,7 +408,7 @@
     });
   });
 
-  // Build checklist
+  // ── Build checklist ───────────────────────────────────────
   var container = document.getElementById('checklist-container');
 
   CATEGORIES.forEach(function(cat) {
@@ -406,10 +424,10 @@
         '<span class="v1" id="cat-v1-' + cat.id + '">0</span>' +
         '<span class="sep">/</span>' +
         '<span class="v2" id="cat-v2-' + cat.id + '">0</span>' +
-        '<span class="sep" style="margin-left:4px;margin-right:2px;">·</span>' +
+        '<span class="sep" style="margin-left:4px;margin-right:2px;">\u00b7</span>' +
         '<span style="font-size:10px;color:var(--faint);">max ' + (cat.items.length * 2) + '</span>' +
       '</span>' +
-      '<span class="category-toggle">▾</span>';
+      '<span class="category-toggle">\u25be</span>';
 
     header.addEventListener('click', function() {
       block.classList.toggle('collapsed');
@@ -444,7 +462,6 @@
       itemsWrap.appendChild(row);
     });
 
-    // Progress bars
     var barRow = document.createElement('div');
     barRow.className = 'cat-bar-row';
     barRow.innerHTML =
@@ -463,7 +480,7 @@
     container.appendChild(block);
   });
 
-  // Score button clicks
+  // ── Score button clicks ───────────────────────────────────
   container.addEventListener('click', function(e) {
     var btn = e.target.closest('.score-btn');
     if (!btn) return;
@@ -471,14 +488,12 @@
     var which = btn.dataset.which;
     var val   = parseInt(btn.dataset.val);
 
-    // Toggle off if already selected
     if (scores[item][which] === val) {
       scores[item][which] = null;
     } else {
       scores[item][which] = val;
     }
 
-    // Update button states
     var btns = document.querySelectorAll('[data-item="' + item + '"][data-which="' + which + '"]');
     btns.forEach(function(b) {
       b.className = 'score-btn';
@@ -521,7 +536,6 @@
     document.getElementById('total-v1').textContent = grandV1;
     document.getElementById('total-v2').textContent = grandV2;
 
-    // Winner badge
     var labelV1 = document.getElementById('label-v1');
     var labelV2 = document.getElementById('label-v2');
     labelV1.innerHTML = vendorNames.v1;
@@ -534,14 +548,141 @@
     }
   }
 
-  // Modal
+  // ── Report HTML builder (shared by print and download) ────
+  function buildReportHTML() {
+    var v1   = vendorNames.v1 || 'Vendor A';
+    var v2   = vendorNames.v2 || 'Vendor B';
+    var date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+    var grandV1 = 0, grandV2 = 0;
+
+    CATEGORIES.forEach(function(cat) {
+      cat.items.forEach(function(item) {
+        if (scores[item.id].v1 !== null) grandV1 += scores[item.id].v1;
+        if (scores[item.id].v2 !== null) grandV2 += scores[item.id].v2;
+      });
+    });
+
+    function scoreLabel(val) {
+      if (val === null) return '\u2014';
+      if (val === 0) return '0 \u2014 Not present';
+      if (val === 1) return '1 \u2014 Partial';
+      return '2 \u2014 Strong';
+    }
+
+    function esc(s) {
+      if (!s) return '';
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    var rows = '';
+    CATEGORIES.forEach(function(cat) {
+      var catV1 = 0, catV2 = 0;
+      cat.items.forEach(function(item) {
+        if (scores[item.id].v1 !== null) catV1 += scores[item.id].v1;
+        if (scores[item.id].v2 !== null) catV2 += scores[item.id].v2;
+      });
+
+      rows += '<tr style="background:#f4f4f3;"><td colspan="3" style="padding:8px 12px;font-weight:700;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#6b6b68;border-bottom:1px solid #d8d8d6;">' +
+        esc(cat.title) + ' \u2014 ' + esc(v1) + ': ' + catV1 + ' &nbsp;\u00b7&nbsp; ' + esc(v2) + ': ' + catV2 + ' &nbsp;\u00b7&nbsp; max ' + (cat.items.length * 2) +
+        '</td></tr>';
+
+      cat.items.forEach(function(item) {
+        var s1 = scores[item.id].v1;
+        var s2 = scores[item.id].v2;
+        var bg1 = s1 === 2 ? '#e6f9f0' : s1 === 1 ? '#fef9e7' : s1 === 0 ? '#fdecea' : '';
+        var bg2 = s2 === 2 ? '#e6f9f0' : s2 === 1 ? '#fef9e7' : s2 === 0 ? '#fdecea' : '';
+        rows += '<tr>' +
+          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;color:#2a2a28;">' + esc(item.text) + '</td>' +
+          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;background:' + bg1 + ';text-align:center;font-weight:700;">' + scoreLabel(s1) + '</td>' +
+          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;background:' + bg2 + ';text-align:center;font-weight:700;">' + scoreLabel(s2) + '</td>' +
+          '</tr>';
+      });
+    });
+
+    return '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+      '<title>ASM Evaluation: ' + esc(v1) + ' vs ' + esc(v2) + '</title>' +
+      '<style>body{font-family:monospace;color:#2a2a28;background:#fff;padding:32px;max-width:900px;margin:0 auto;}' +
+      'h1{font-size:18px;margin-bottom:4px;}' +
+      '.meta{font-size:12px;color:#6b6b68;margin-bottom:24px;}' +
+      '.summary{display:flex;gap:1px;background:#d8d8d6;border:1px solid #d8d8d6;margin-bottom:32px;}' +
+      '.summary-cell{flex:1;background:#2a2a28;padding:16px 20px;}' +
+      '.summary-score{font-size:28px;font-weight:700;color:#C0392B;}' +
+      '.summary-label{font-size:11px;color:#fff;margin-top:4px;}' +
+      'table{width:100%;border-collapse:collapse;border:1px solid #d8d8d6;}' +
+      'th{padding:8px 12px;font-size:11px;text-align:left;text-transform:uppercase;letter-spacing:0.05em;color:#6b6b68;border-bottom:2px solid #2a2a28;background:#f4f4f3;}' +
+      '.footer{margin-top:32px;font-size:11px;color:#9b9b98;border-top:1px solid #d8d8d6;padding-top:16px;}' +
+      '@media print{body{padding:16px;}}' +
+      '</style></head><body>' +
+      '<h1>EASM Platform Evaluation</h1>' +
+      '<div class="meta">Generated ' + esc(date) + ' &nbsp;\u00b7&nbsp; attacksurfacemanagementsoftware.com &nbsp;\u00b7&nbsp; Independent. No vendor relationships.</div>' +
+      '<div class="summary">' +
+        '<div class="summary-cell"><div class="summary-score">' + grandV1 + '<span style="font-size:16px;color:#9b9b98"> / 42</span></div>' +
+          '<div class="summary-label">' + esc(v1) + (grandV1 > grandV2 ? ' &nbsp;&#9650; Leading' : '') + '</div></div>' +
+        '<div class="summary-cell"><div class="summary-score">' + grandV2 + '<span style="font-size:16px;color:#9b9b98"> / 42</span></div>' +
+          '<div class="summary-label">' + esc(v2) + (grandV2 > grandV1 ? ' &nbsp;&#9650; Leading' : '') + '</div></div>' +
+      '</div>' +
+      '<table><thead><tr>' +
+        '<th style="width:50%;">Criterion</th>' +
+        '<th style="width:25%;">' + esc(v1) + '</th>' +
+        '<th style="width:25%;">' + esc(v2) + '</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div class="footer">Scores reflect your independent evaluation. 0 = not present &nbsp;\u00b7&nbsp; 1 = partial &nbsp;\u00b7&nbsp; 2 = strong &nbsp;\u00b7&nbsp; Maximum 42 points per vendor.<br>' +
+      "M&W Security covers the cybersecurity software market the way your vendors hope you won't. machinesandwords.com</div>" +
+      '</body></html>';
+  }
+
+  // ── Print path ────────────────────────────────────────────
+  function printReport() {
+    var html = buildReportHTML();
+    var win  = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+    setTimeout(function() { win.print(); }, 500);
+  }
+
+  // ── Download path ─────────────────────────────────────────
+  async function downloadReport() {
+    var statusEl = document.getElementById('modal-status');
+    statusEl.style.color = 'var(--faint)';
+    statusEl.textContent = 'Building file\u2026';
+    try {
+      var html = buildReportHTML();
+      var v1slug = (vendorNames.v1 || 'vendor-a').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      var v2slug = (vendorNames.v2 || 'vendor-b').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      var filename = 'asm-evaluation-' + v1slug + '-vs-' + v2slug + '.html';
+      var blob = new Blob([html], { type: 'text/html' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'asm-evaluation-' + v1slug + '-vs-' + v2slug + '.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 10000);
+      statusEl.style.color = '#2e7d32';
+      statusEl.textContent = 'Download started.';
+    } catch(e) {
+      statusEl.style.color = '#991b1b';
+      statusEl.textContent = 'Export failed \u2014 please try again.';
+    }
+  }
+
+  // ── Modal wiring ──────────────────────────────────────────
   var modalOverlay = document.getElementById('modal-overlay');
   var modalClose   = document.getElementById('modal-close');
   var modalSubmit  = document.getElementById('modal-submit');
   var modalEmail   = document.getElementById('modal-email');
   var modalStatus  = document.getElementById('modal-status');
+  var exportBtns   = document.getElementById('modal-export-btns');
 
   document.getElementById('export-btn').addEventListener('click', function() {
+    // Reset modal to input state in case it was previously used
+    document.getElementById('modal-form-row').style.display = 'flex';
+    document.getElementById('modal-saved-note').style.display = '';
+    document.getElementById('modal-fine-print').style.display = '';
+    exportBtns.classList.remove('visible');
+    modalStatus.textContent = '';
+    modalSubmit.disabled = false;
     modalOverlay.classList.add('open');
     modalEmail.focus();
   });
@@ -563,7 +704,7 @@
     }
 
     modalStatus.style.color = 'var(--faint)';
-    modalStatus.textContent = 'Subscribing...';
+    modalStatus.textContent = 'Subscribing\u2026';
     modalSubmit.disabled = true;
 
     fetch('https://newsletter-attacksurfacemanagementsoftware.whereismy328.workers.dev/subscribe', {
@@ -575,11 +716,12 @@
       .then(function(data) {
         if (data.message === 'Subscribed') {
           modalStatus.style.color = 'var(--accent)';
-          modalStatus.textContent = 'You\'re in. Generating your report...';
-          setTimeout(function() {
-            modalOverlay.classList.remove('open');
-            generatePDF();
-          }, 1200);
+          modalStatus.textContent = "You're in. Choose your export format:";
+          // Hide input row, show export buttons
+          document.getElementById('modal-form-row').style.display = 'none';
+          document.getElementById('modal-saved-note').style.display = 'none';
+          document.getElementById('modal-fine-print').style.display = 'none';
+          exportBtns.classList.add('visible');
         } else {
           modalStatus.style.color = '#991b1b';
           modalStatus.textContent = 'Something went wrong. Please try again.';
@@ -593,85 +735,19 @@
       });
   });
 
-  // PDF generation
-  function generatePDF() {
-    var v1 = vendorNames.v1 || 'Vendor A';
-    var v2 = vendorNames.v2 || 'Vendor B';
-    var date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
-    var grandV1 = 0, grandV2 = 0;
+  document.getElementById('btn-print-report').addEventListener('click', function() {
+    modalOverlay.classList.remove('open');
+    printReport();
+  });
 
-    CATEGORIES.forEach(function(cat) {
-      cat.items.forEach(function(item) {
-        if (scores[item.id].v1 !== null) grandV1 += scores[item.id].v1;
-        if (scores[item.id].v2 !== null) grandV2 += scores[item.id].v2;
-      });
-    });
+  document.getElementById('btn-download-html').addEventListener('click', function() {
+    downloadReport();
+  });
 
-    var scoreLabel = function(val) {
-      if (val === null) return '—';
-      if (val === 0) return '0 — Not present';
-      if (val === 1) return '1 — Partial';
-      return '2 — Strong';
-    };
-
-    var rows = '';
-    CATEGORIES.forEach(function(cat) {
-      var catV1 = 0, catV2 = 0;
-      cat.items.forEach(function(item) {
-        if (scores[item.id].v1 !== null) catV1 += scores[item.id].v1;
-        if (scores[item.id].v2 !== null) catV2 += scores[item.id].v2;
-      });
-
-      rows += '<tr style="background:#f4f4f3;"><td colspan="3" style="padding:8px 12px;font-weight:700;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#6b6b68;border-bottom:1px solid #d8d8d6;">' + cat.title + ' — ' + v1 + ': ' + catV1 + ' &nbsp;·&nbsp; ' + v2 + ': ' + catV2 + ' &nbsp;·&nbsp; max ' + (cat.items.length * 2) + '</td></tr>';
-
-      cat.items.forEach(function(item) {
-        var s1 = scores[item.id].v1;
-        var s2 = scores[item.id].v2;
-        var bg1 = s1 === 2 ? '#e6f9f0' : s1 === 1 ? '#fef9e7' : s1 === 0 ? '#fdecea' : '';
-        var bg2 = s2 === 2 ? '#e6f9f0' : s2 === 1 ? '#fef9e7' : s2 === 0 ? '#fdecea' : '';
-        rows += '<tr>' +
-          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;color:#2a2a28;">' + item.text + '</td>' +
-          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;background:' + bg1 + ';text-align:center;font-weight:700;">' + scoreLabel(s1) + '</td>' +
-          '<td style="padding:8px 12px;font-size:12px;border-bottom:1px solid #d8d8d6;background:' + bg2 + ';text-align:center;font-weight:700;">' + scoreLabel(s2) + '</td>' +
-          '</tr>';
-      });
-    });
-
-    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
-      '<title>ASM Evaluation: ' + v1 + ' vs ' + v2 + '</title>' +
-      '<style>body{font-family:monospace;color:#2a2a28;background:#fff;padding:32px;max-width:900px;margin:0 auto;}' +
-      'h1{font-size:18px;margin-bottom:4px;}' +
-      '.meta{font-size:12px;color:#6b6b68;margin-bottom:24px;}' +
-      '.summary{display:flex;gap:1px;background:#d8d8d6;border:1px solid #d8d8d6;margin-bottom:32px;}' +
-      '.summary-cell{flex:1;background:#2a2a28;padding:16px 20px;}' +
-      '.summary-score{font-size:28px;font-weight:700;color:#C0392B;}' +
-      '.summary-label{font-size:11px;color:#fff;margin-top:4px;}' +
-      'table{width:100%;border-collapse:collapse;border:1px solid #d8d8d6;}' +
-      'th{padding:8px 12px;font-size:11px;text-align:left;text-transform:uppercase;letter-spacing:0.05em;color:#6b6b68;border-bottom:2px solid #2a2a28;background:#f4f4f3;}' +
-      '.footer{margin-top:32px;font-size:11px;color:#9b9b98;border-top:1px solid #d8d8d6;padding-top:16px;}' +
-      '@media print{body{padding:16px;}}' +
-      '</style></head><body>' +
-      '<h1>EASM Platform Evaluation</h1>' +
-      '<div class="meta">Generated ' + date + ' &nbsp;·&nbsp; attacksurfacemanagementsoftware.com &nbsp;·&nbsp; Independent. No vendor relationships.</div>' +
-      '<div class="summary">' +
-        '<div class="summary-cell"><div class="summary-score">' + grandV1 + '<span style="font-size:16px;color:#9b9b98"> / 42</span></div><div class="summary-label">' + v1 + (grandV1 > grandV2 ? ' &nbsp;&#9650; Leading' : '') + '</div></div>' +
-        '<div class="summary-cell"><div class="summary-score">' + grandV2 + '<span style="font-size:16px;color:#9b9b98"> / 42</span></div><div class="summary-label">' + v2 + (grandV2 > grandV1 ? ' &nbsp;&#9650; Leading' : '') + '</div></div>' +
-      '</div>' +
-      '<table><thead><tr><th style="width:50%;">Criterion</th><th style="width:25%;">' + v1 + '</th><th style="width:25%;">' + v2 + '</th></tr></thead><tbody>' + rows + '</tbody></table>' +
-      '<div class="footer">Scores reflect your independent evaluation. 0 = not present &nbsp;·&nbsp; 1 = partial &nbsp;·&nbsp; 2 = strong &nbsp;·&nbsp; Maximum 42 points per vendor.<br>M&W Security covers the cybersecurity software market the way your vendors hope you won\'t. machinesandwords.com</div>' +
-      '</body></html>';
-
-    var win = window.open('', '_blank');
-    win.document.write(html);
-    win.document.close();
-    setTimeout(function() { win.print(); }, 500);
-  }
-
-  // Restore state on load
+  // ── Init ──────────────────────────────────────────────────
   restoreState();
   updateTotals();
 
-  // Re-apply saved button states
   CATEGORIES.forEach(function(cat) {
     cat.items.forEach(function(item) {
       ['v1','v2'].forEach(function(which) {
