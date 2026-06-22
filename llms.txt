@@ -1,0 +1,26 @@
+# Attack Surface Management Software
+
+Independent buyer's guide for enterprise security teams evaluating attack surface management, external attack surface management (EASM), and continuous threat exposure management (CTEM) platforms. Vendor-neutral. No affiliate relationships.
+
+## Pages
+
+- [Home](https://attacksurfacemanagementsoftware.com/): Overview of the attack surface management software category and what this site covers.
+- [Why ASM?](https://attacksurfacemanagementsoftware.com/why/): How the standalone ASM market is being absorbed into CTEM and AEV frameworks and what that shift means for security practitioners.
+- [Subscribe](https://attacksurfacemanagementsoftware.com/subscribe/): The Independent Defender — a free biweekly newsletter covering emerging cybersecurity software categories for CISO-track practitioners.
+- [Platform Comparisons](https://attacksurfacemanagementsoftware.com/comparisons/): Index of independent head-to-head comparisons between attack surface management platforms.
+- [CrowdStrike vs. Microsoft Defender EASM](https://attacksurfacemanagementsoftware.com/comparisons/crowdstrike-vs-microsoft/): CrowdStrike Falcon Surface vs. Microsoft Defender EASM — two platform consolidators compared for security teams already committed to one ecosystem.
+- [Censys vs. Cortex Xpanse](https://attacksurfacemanagementsoftware.com/comparisons/censys-vs-palo-alto/): Censys vs. Cortex Xpanse — internet-scale discovery data platform vs. operationalized EASM within a Palo Alto security ecosystem.
+- [Bitsight vs. Tenable](https://attacksurfacemanagementsoftware.com/comparisons/bitsight-vs-tenable/): Security ratings and vendor risk management vs. operational exposure management — compared for teams deciding what kind of program they need.
+- [Tenable vs. Qualys](https://attacksurfacemanagementsoftware.com/comparisons/tenable-vs-qualys/): Two Gartner MQ Leaders with different architectural commitments to CTEM — compared for enterprise exposure management platform buyers.
+- [IONIX vs. CyCognito](https://attacksurfacemanagementsoftware.com/comparisons/ionix-vs-cycognito/): Organizational entity mapping vs. active exposure validation — two pure-play EASM specialists compared.
+- [ASM Market Landscape](https://attacksurfacemanagementsoftware.com/landscape/): How the attack surface management market is structured, who the vendors are, and what kind of platform security teams actually need.
+- [ASM Market Direction](https://attacksurfacemanagementsoftware.com/landscape/market-direction/): Where the ASM market is heading — CTEM as organizing framework, AEV as the emerging validation layer, and how regulatory pressure is shaping buying decisions.
+- [Vendor Comparison Tool](https://attacksurfacemanagementsoftware.com/landscape/vendor-comparison/): Interactive tool to filter and compare ASM vendors by cluster, discovery method, CTEM alignment, and pricing model.
+- [Vendor Index](https://attacksurfacemanagementsoftware.com/landscape/vendors/): Every significant attack surface management vendor organized by architectural cluster — pure-play EASM, platform consolidators, CAASM, and DRPS.
+- [Guides](https://attacksurfacemanagementsoftware.com/guides/): Index of practical guides for ASM buyers and security practitioners.
+- [CTEM Mobilization Without a SOAR](https://attacksurfacemanagementsoftware.com/guides/ctem-mobilization-without-soar/): What operational CTEM mobilization looks like when your stack is a ticketing system and a weekly standup, not a SOAR.
+- [Why Your EASM Implementation Stalled](https://attacksurfacemanagementsoftware.com/guides/easm-implementation-stalled/): Four patterns that cause EASM prioritization to break down, and what security practitioners can do about each.
+- [The M&A Attack Surface Problem](https://attacksurfacemanagementsoftware.com/guides/m-and-a-attack-surface/): What attack surface exposure looks like at deal close and which security actions cannot wait for integration planning to begin.
+- [The Per-Asset Pricing Trap](https://attacksurfacemanagementsoftware.com/guides/per-asset-pricing-trap/): How per-asset daily EASM pricing creates a cost trap for organizations with large or poorly inventoried external infrastructure.
+- [Seedless Discovery Is a Spectrum](https://attacksurfacemanagementsoftware.com/guides/seedless-discovery-spectrum/): How EASM vendors differ in organizational attribution techniques and what those gaps mean for external attack surface coverage.
+- [ASM Tools](https://attacksurfacemanagementsoftware.com/tools/): Index of free interactive tools for ASM buyers — vendor comparison, platform evaluation checklist, pricing calculator, CTEM maturity assessment, and M&A security readiness checklist.
